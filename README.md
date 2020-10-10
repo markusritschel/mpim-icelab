@@ -12,11 +12,7 @@ Clone this repo via
 ```bash
 git clone https://github.com/markusritschel/mpim-icelab
 ```
-Then, in the new directory
-```
-cd mpim-icelab/
-```
-install the package via:
+Then, in the new directory (`cd mpim-icelab/`) install the package via:
 ```
 python setup.py install
 ```
