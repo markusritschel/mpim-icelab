@@ -1,4 +1,4 @@
-# MPIM Ice Lab Routines
+# MPIM Ice-Lab Routines
 
 ![build](https://github.com/markusritschel/mpim-icelab/workflows/build/badge.svg)
 [![License MIT license](https://img.shields.io/github/license/markusritschel/mpim-icelab)](./LICENSE)
