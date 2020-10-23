@@ -1,3 +1,6 @@
+from glob import glob
+from os.path import basename, splitext
+
 from setuptools import find_packages, setup
 
 with open('README.md') as readme_file:
@@ -31,7 +34,10 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     url='https://github.com/markusritschel/mpim-icelab',
-    packages=find_packages(include=['mpim-icelab', 'mpim-icelab.*']),
+    # packages=find_packages(include=['src/mpim_icelab', 'src/mpim_icelab.*']),
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     install_requires=setup_requirements,
     setup_requires=setup_requirements,
     test_suite='tests',
