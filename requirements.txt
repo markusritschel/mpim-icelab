@@ -1,6 +1,6 @@
-pip==19.2.3
-flake8==3.7.8
-coverage==4.5.4
+pip
+flake8
+coverage
 Click
 pytest
 
