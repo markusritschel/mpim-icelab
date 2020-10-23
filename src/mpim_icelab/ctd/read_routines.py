@@ -94,7 +94,7 @@ def read_seabird(file: str, **kwargs):
                                               'id'  : rx.group('id')}
                 var_names.append(rx.group('name'))
                 units.append(rx.group('unit'))
-                logger.debug(f"Found variable {rx.group('variable')} (unit: {rx.group('unit')}, name: {rx.group('name')})")
+                logger.debug("Found variable %s (unit: %s, name: %s)", rx.group('variable'), rx.group('unit'), rx.group('name'))
 
             # get logging interval
             # rx = re.match(r'^# interval = (?P<unit>\w+?): (?P<value>\d+)', line)
@@ -102,19 +102,19 @@ def read_seabird(file: str, **kwargs):
             if rx:
                 # interval = pd.Timedelta('{} {}'.format(rx.group('value'), rx.group('unit')))
                 sample_interval = pd.Timedelta(rx.group('sample_interval'))
-                logger.debug(f"Found sample time: {sample_interval}")
+                logger.debug("Found sample time: %s", sample_interval)
 
             # get start time
             rx = re.match(r'^# start_time = (.+) \[.+\]', line)
             if rx:
                 start_time = pd.to_datetime(rx.group(1))
-                logger.debug(f"Found start time: {start_time}")
+                logger.debug("Found start time: %s", start_time)
 
             # get bad_flag
             rx = re.match(r'^# bad_flag = ([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)', line)
             if rx:
                 bad_flag = rx.group(1)
-                logger.debug(f"Found bad_flag: {bad_flag}")
+                logger.debug("Found bad_flag: %s", bad_flag)
 
     if not var_names:
         raise IOError("No variable names found in header! Please check input file.")
