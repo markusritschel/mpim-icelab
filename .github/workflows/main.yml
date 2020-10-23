@@ -39,4 +39,4 @@ jobs:
           # pip install pyscaffold
           pip install pytest pytest-cov
           python setup.py develop
-          pytest -v --doctest-modules --cov=com --cov-report=xml --cov-report=html
+          pytest tests/ -v --doctest-modules --cov=com --cov-report=xml --cov-report=html
