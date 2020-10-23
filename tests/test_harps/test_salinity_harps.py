@@ -46,7 +46,7 @@ def test_calc_ice_properties(harp_dataset):
     data = harp_dataset.copy().seaice.calc_ice_properties()
     assert isinstance(data, xarray.Dataset)
     for var in ['temperature', 'brine_salinity', 'liquid_fraction', 'solid_fraction']:
-        assert var in data.data_vars, f"{var} not found in dataset after calculating ice properties"
+        assert var in data.data_vars, "{} not found in dataset after calculating ice properties".format(var)
         assert hasattr(data[var], 'units')
 
 

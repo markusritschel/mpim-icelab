@@ -131,13 +131,13 @@ def calc_brine_salinity(T, method='Assur', print_formula=False):
 
     if print_formula:
         print('-'*60)
-        print(f'For {method}, the S_brine gets calculated according to')
+        print('For {}, the S_brine gets calculated according to'.format(method))
         print('\tS_brine = a + b*T +c*T**2 +d*T**3')
         print('with: ')
-        print(f'\ta = {a}')
-        print(f'\tb = {b}')
-        print(f'\tc = {c}')
-        print(f'\td = {d}')
+        print('\ta = {}'.format(a))
+        print('\tb = {}'.format(b))
+        print('\tc = {}'.format(c))
+        print('\td = {}'.format(d))
         print()
 
     return S_brine
