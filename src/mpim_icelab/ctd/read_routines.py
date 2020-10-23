@@ -84,7 +84,7 @@ def read_seabird(file: str, **kwargs):
             rx = re.match(r'^(\s*<.+>\s*)$', line)
             if rx:
                 xml_header += rx.group(0)
-                logger.debug(f"Found xml header")
+                logger.debug("Found xml header")
 
             # get names and units
             rx = re.match(r'^# name (?P<id>\d) = (?P<variable>.+?): (?P<name>.+?) \[(?P<unit>.+?)\].*$', line)
