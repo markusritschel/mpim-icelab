@@ -18,7 +18,7 @@ from mpim_icelab.harps.salinity_harps import calc_brine_salinity, calc_freezing_
 # pathlib.Path.cwd()
 # all_files = glob.glob(os.path.join(base_dir, '*.log'))
 
-TESTFILE = pathlib.Path.cwd() / 'salinity_harps_test_data.dat'
+TESTFILE = pathlib.Path(__file__).parent / 'salinity_harps_test_data.dat'
 
 @pytest.fixture
 def harp_dataset(file=TESTFILE):
