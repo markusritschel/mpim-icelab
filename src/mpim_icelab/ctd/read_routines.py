@@ -124,7 +124,7 @@ def read_seabird(file: str, **kwargs):
         raise IOError("No logging interval value found in header! Please check input file.")
 
     # modify names such that there are no blank spaces in between elements
-    var_names[:] = [re.sub(r"[,]*\s+", "_", var) for var in var_names]
+    var_names[:] = [re.sub(r"[,]*\s+", "_", var).lower() for var in var_names]
     # var_names = [entry.replace('_Practical', '') for entry in var_names]
 
     units_dict = {var.lower(): unit.split(',')[-1].strip() for (var, unit) in zip(var_names, units)
@@ -145,7 +145,7 @@ def read_seabird(file: str, **kwargs):
     df.index = time_idx
     df.index = df.index.round(sample_interval)
 
-    df.index.name = 'timestamp'
+    df.index.name = 'time'
 
     # df.rename(columns={'Salinity_Practical': 'Salinity'}, inplace=True)
 
@@ -179,7 +179,47 @@ def read_seabird(file: str, **kwargs):
     #     logger.info(f'\t{var:<12} : {unit}')
 
     ds = df.to_xarray()
-    ds.attrs = units_dict
+    # ds.attrs = units_dict
+
+    attrs_dict = dict(
+        temperature={'long_name': 'Temperature',
+                     'units': '°C',
+                     'comment': 'Water temperature',
+                     'description': 'Water temperature'
+                     },
+        potential_temperature={'long_name': 'Potential temperature',
+                               'units': '°C',
+                               'comment': 'Potential temperature',
+                               'description': 'Potential temperature'
+                               },
+        conductivity={'long_name': 'Conductivity',
+                      'units': 'S/m',
+                      'comment': 'Conductivity',
+                      'description': 'Conductivity'
+                      },
+        density={'long_name': 'Density',
+                 'units': 'kg/m³',
+                 'comment': 'Density',
+                 'description': 'Density'
+                 },
+        pressure={'long_name': 'Pressure',
+                  'units': 'psi',
+                  'comment': 'Pressure',
+                  'description': 'Pressure'
+                  },
+        salinity={'long_name': 'Salinity',
+                            'units': 'psu',
+                            'comment': 'Salinity',
+                            'description': 'Salinity'
+                            },
+        salinity_practical={'long_name': 'Practical Salinity',
+                            'units': 'psu',
+                            'comment': 'Practical Salinity',
+                            'description': 'Practical Salinity'
+                            },
+        time={'long_name': 'Time'},
+        )
+    populate_attrs(ds, attrs_dict)
 
     xml_header = "<root>" + xml_header + "</root>"
     xml_dict = xmltodict.parse(xml_header)
@@ -193,30 +233,53 @@ def read_seabird_serial_log(file, **kwargs):
         lines = filter(None, (line.rstrip() for line in f))  # omit empty lines
         lines = list((line.lstrip('#') for line in lines))
 
-    col_names = ['Temperature', 'Conductivity', 'Pressure', 'date', 'time']
+    col_names = ['temperature', 'conductivity', 'pressure', '_date', '_time']
     # Salinity is not included by default. Can be changed in SeaTerm (under Windows)
     if len(lines[0].split(',')) == 6:
-        col_names.insert(3, 'Salinity')
+        col_names.insert(3, 'salinity')
 
     units = {'Temperature':  '°C',
              'Conductivity': 'S/m',
              'Pressure':     'dbar',
              'Salinity':     'psu'}
 
-    df = pd.read_csv(io.StringIO('\n'.join(lines)), names=col_names, parse_dates={'timestamp': ['date', 'time']})
+    df = pd.read_csv(io.StringIO('\n'.join(lines)), names=col_names, parse_dates={'time': ['_date', '_time']})
 
-    # create timestamp and set as index
-    # df['timestamp'] = df.date.map(str) + df.time
+    # create time and set as index
+    # df['time'] = df.date.map(str) + df.time
     # df.drop(['date', 'time'], axis=1, inplace=True)
-    # df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df.set_index(['timestamp'], inplace=True)
+    # df['time'] = pd.to_datetime(df['time'])
+    df.set_index(['time'], inplace=True)
 
     # ensure all column dtypes are numeric
     df = df.apply(pd.to_numeric, errors='coerce')
 
     ds = df.to_xarray()
-    ds = ds.assign_attrs(units)
-    # ds = ds.assign_attrs({'device': 'seabird'})
+
+    attrs_dict = dict(
+        temperature={'long_name': 'Temperature',
+                     'units': '°C',
+                     'comment': 'Water temperature',
+                     'description': 'Water temperature'
+                     },
+        conductivity={'long_name': 'Conductivity',
+                      'units': 'S/m',
+                      'comment': 'Conductivity',
+                      'description': 'Conductivity'
+                      },
+        pressure={'long_name': 'Pressure',
+                  'units': 'psi',
+                  'comment': 'Pressure',
+                  'description': 'Pressure'
+                  },
+        salinity={'long_name': 'Salinity',
+                  'units': 'psu',
+                  'comment': 'Salinity',
+                  'description': 'Salinity'
+                  },
+        time={'long_name': 'Time'},
+        )
+    populate_attrs(ds, attrs_dict)
 
     return ds
 
@@ -275,7 +338,7 @@ def read_rbr(file, nan_flag=-1000., **kwargs):
     time_idx = pd.date_range(start=header['log_start'], end=header['log_end'], freq=header['sample_period'])
     df.index = time_idx[:len(df)]
     df.index = df.index.round(header['sample_period'])
-    df.index.name = 'timestamp'
+    df.index.name = 'time'
 
     # set nan_flag as NAN
     df[df == nan_flag] = np.nan
@@ -284,21 +347,59 @@ def read_rbr(file, nan_flag=-1000., **kwargs):
                        'Temp': 'Temperature',
                        'Pres': 'Pressure',
                        'Sal': 'Salinity',
-                       'DensAnom': 'Density_Anomaly'
+                       'DensAnom': 'Density_anomaly'
                        }, inplace=True)
 
-    df = df.reindex(sorted(df.columns), axis=1)
+    df = df.reindex(map(str.lower, sorted(df.columns)), axis=1)
 
     if 'verbose' in kwargs:
         for k, v in header.items():
             print('{:<14}: {}'.format(k, v))
         print()
 
-    units_dict = {'Conductivity': 'mS/cm',
-                  'Temperature': '°C',
-                  'Pressure': 'dbar'}
-
     ds = df.to_xarray()
-    ds.attrs = units_dict
 
+    attrs_dict = dict(
+        temperature={'long_name': 'Temperature',
+                     'units': '°C',
+                     'comment': 'Water temperature',
+                     'description': 'Water temperature'
+                     },
+        potential_temperature={'long_name': 'Potential temperature',
+                               'units': '°C',
+                               'comment': 'Potential temperature',
+                               'description': 'Potential temperature'
+                               },
+        conductivity={'long_name': 'Conductivity',
+                      'units': 'mS/cm',
+                      'comment': 'Conductivity',
+                      'description': 'Conductivity'
+                      },
+        density_anomaly={'long_name': 'Density Anomaly',
+                 'units': 'kg/m³',
+                 'comment': 'Density Anomaly',
+                 'description': 'Density Anomaly'
+                 },
+        pressure={'long_name': 'Pressure',
+                  'units': 'psi',
+                  'comment': 'Pressure',
+                  'description': 'Pressure'
+                  },
+        salinity={'long_name': 'Salinity',
+                  'units': 'psu',
+                  'comment': 'Salinity',
+                  'description': 'Salinity'
+                  },
+        time={'long_name': 'Time'},
+        )
+    populate_attrs(ds, attrs_dict)
+
+    return ds
+
+
+def populate_attrs(ds, attrs_dict):
+    for var, sd in attrs_dict.items():
+        if var in ds.variables:
+            for k, v in sd.items():
+                ds[var].attrs[k] = v
     return ds
