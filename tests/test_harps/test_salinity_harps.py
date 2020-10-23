@@ -8,13 +8,17 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 import numpy
+import pathlib
 import pytest
 import xarray
 from mpim_icelab.harps import read_salinity_harp
 from mpim_icelab.harps.salinity_harps import calc_brine_salinity, calc_freezing_starts
 
+# base_dir = os.path.dirname(os.path.abspath(__file__))
+# pathlib.Path.cwd()
+# all_files = glob.glob(os.path.join(base_dir, '*.log'))
 
-TESTFILE = './test_harps/salinity_harps_test_data.dat'
+TESTFILE = pathlib.Path.cwd() / 'salinity_harps_test_data.dat'
 
 @pytest.fixture
 def harp_dataset(file=TESTFILE):
@@ -64,7 +68,7 @@ def test_reference_resistance(harp_dataset):
     assert resistance['wire_harps'].size == freezing_onset
 
 
-# @pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_solid_liquid_fraction(harp_dataset):
     assert numpy.all((harp_dataset.liquid_fraction + harp_dataset.solid_fraction).dropna('time') == 1), \
         'Liquid and solid fraction should match up to 1.'
