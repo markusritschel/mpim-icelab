@@ -75,7 +75,7 @@ def read_harp(file, debug=False, **kwargs):
     # ensure time coordinate is datetime object
     ds.coords['time'] = pd.to_datetime(ds.time.values)
 
-    populate_attrs(ds)
+    populate_attrs(ds, _ATTRS_DICT)
 
     if not kwargs.pop('debug', None):
         ds = ds.drop(labels=['d2','d16','logger_temp'])
@@ -196,68 +196,69 @@ class SalinityHarpsAccessor:
                         # 'temperature_freeze': T_freeze
                        })
 
-        populate_attrs(ds)
+        populate_attrs(ds, _ATTRS_DICT)
 
         return ds
 
 
-def populate_attrs(ds):
-    _attrs_dict = dict(
-        temperature={'long_name': 'Temperature',
-                     'units': '°C',
-                     'comment': 'Temperature inside the ice body',
-                     'description': 'Temperature at a certain level (associated with the respective wire pair) inside the ice body'
+_ATTRS_DICT = dict(
+    temperature={'long_name': 'Temperature',
+                 'units': '°C',
+                 'comment': 'Temperature inside the ice body',
+                 'description': 'Temperature at a certain level (associated with the respective wire pair) inside the ice body'
+                 },
+    brine_salinity={'long_name': 'Salinity of brine',
+                    'units': 'g/kg',
+                    'comment': 'Salinity of brine',
+                    'description': 'Salinity of brine'
+                    },
+    bulk_salinity={'long_name': 'Bulk Salinity',
+                   'units': 'g/kg',
+                   'comment': 'Bulk Salinity',
+                   'description': 'Bulk Salinity'
+                   },
+    solid_fraction={'long_name': 'Solid fraction',
+                    'units': '',
+                    'comment': 'Solid fraction',
+                    'description': 'Solid fraction'
+                    },
+    liquid_fraction={'long_name': 'Liquid fraction',
+                     'units': '',
+                     'comment': 'Liquid fraction',
+                     'description': 'Liquid fraction'
                      },
-        brine_salinity={'long_name': 'Salinity of brine',
-                        'units': 'g/kg',
-                        'comment': 'Salinity of brine',
-                        'description': 'Salinity of brine'
-                        },
-        bulk_salinity={'long_name': 'Bulk Salinity',
-                       'units': 'g/kg',
-                       'comment': 'Bulk Salinity',
-                       'description': 'Bulk Salinity'
-                       },
-        solid_fraction={'long_name': 'Solid fraction',
-                        'units': '',
-                        'comment': 'Solid fraction',
-                        'description': 'Solid fraction'
-                        },
-        liquid_fraction={'long_name': 'Liquid fraction',
-                         'units': '',
-                         'comment': 'Liquid fraction',
-                         'description': 'Liquid fraction'
-                         },
-        logger_temp={'long_name': 'Temperature',
-                     'units': '°C',
-                     'comment': 'Temperature inside the ice body',
-                     'description': 'Temperature at a certain level (associated with the respective wire pair) inside the ice body'
-                     },
-        r16={'long_name': 'Resistance r16',
-             'units': 'Ω',
-             'comment': 'Resistance at 16 Hz',
-             'description': 'Resistance at 16 Hz'
-             },
-        r2={'long_name': 'Resistance r2',
-            'units': 'Ω',
-            'comment': 'Resistance at 2 Hz',
-            'description': 'Resistamce at 2 Hz'
-            },
-        d16={'long_name': 'Debug flag for r16',
-             'units': '',
-             'comment': 'Debug flag for r16',
-             'description': 'Debug flag for r16'
-             },
-        d2={'long_name': 'Debug flag for r2',
-            'units': '',
-            'comment': 'Debug flag for r2',
-            'description': 'Debug flag for r2'
-            },
-        wire_pair={'long_name': 'Wire pair'},
-        time={'long_name': 'Time'},
-        )
+    logger_temp={'long_name': 'Temperature',
+                 'units': '°C',
+                 'comment': 'Temperature inside the ice body',
+                 'description': 'Temperature at a certain level (associated with the respective wire pair) inside the ice body'
+                 },
+    r16={'long_name': 'Resistance r16',
+         'units': 'Ω',
+         'comment': 'Resistance at 16 Hz',
+         'description': 'Resistance at 16 Hz'
+         },
+    r2={'long_name': 'Resistance r2',
+        'units': 'Ω',
+        'comment': 'Resistance at 2 Hz',
+        'description': 'Resistance at 2 Hz'
+        },
+    d16={'long_name': 'Debug flag for r16',
+         'units': '',
+         'comment': 'Debug flag for r16',
+         'description': 'Debug flag for r16'
+         },
+    d2={'long_name': 'Debug flag for r2',
+        'units': '',
+        'comment': 'Debug flag for r2',
+        'description': 'Debug flag for r2'
+        },
+    wire_pair={'long_name': 'Wire pair'},
+    time={'long_name': 'Time'},
+    )
 
-    for var, sd in _attrs_dict.items():
+
+def populate_attrs(ds, attrs_dict):
+    for var, sd in attrs_dict.items():
         if var in ds.variables:
             for k, v in sd.items():
                 ds[var].attrs[k] = v
