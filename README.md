@@ -16,9 +16,10 @@ Then, in the new directory (`cd mpim-icelab/`) install the package via:
 ```
 python setup.py install
 ```
-or via
+or via one of the following
 ```
 python setup.py develop
+pip install -e .
 ```
 if you plan on making changes on the code.
 
@@ -31,7 +32,7 @@ Run `make coverage` to generate a test coverage report and `make lint` to check 
 
 
 ## Features
-* [ ] TODO
+* [ ] Add examples in Jupyter Notebook for TSTICKS
 
 
 ## Maintainer
