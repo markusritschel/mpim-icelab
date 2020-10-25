@@ -38,8 +38,8 @@ def read_tsticks(file):
 
     df = df.unstack(level=1).reorder_levels([0, 2, 1], axis=1)
 
-    lastcol_idx = df.dropna(subset=[('temperature', 7, 't7')]).index
-    firstcol_idx = df.dropna(subset=[('temperature', 0, 't0')]).index
+    lastcol_idx = df.dropna(subset=[df.columns[-1]]).index
+    firstcol_idx = df.dropna(subset=[df.columns[0]]).index
 
     # ... and fill NANs in all columns backwards such that in each row with `lastcol_idx` are
     # all values of one block
@@ -52,8 +52,9 @@ def read_tsticks(file):
     # convert back to multi index
     df = df.stack(level=[1, 2])
     df.index = df.index.rename('sensor', level=2)
-    df.index.set_levels(range(8), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
-
+    sensors = df.index.get_level_values('sensor').unique()
+    df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
+    
     ds = df.to_xarray()
     # print('\n', ds)
 
