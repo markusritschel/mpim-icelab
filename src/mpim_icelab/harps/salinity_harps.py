@@ -35,7 +35,7 @@ def read_salinity_harp(file, debug=False, **kwargs):
 
     # read csv file into Pandas DataFrame
     df = pd.read_csv(file, names=col_names, index_col=False,
-                     skiprows=0, comment='#', sep=' ',
+                     skiprows=0, comment='#', sep=r'\s+',
                      engine='python', error_bad_lines=False)
 
     # split first column into harp-module number and wire-pair number and remove the origin column
