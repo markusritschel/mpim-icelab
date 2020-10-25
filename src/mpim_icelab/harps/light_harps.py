@@ -74,4 +74,10 @@ def read_light_harp(file):
 
     ds = df.to_xarray()
 
+    ds.attrs = {'C': 'Clear channel',
+                'R': 'Red channel',
+                'G': 'Green channel',
+                'B': 'Blue channel',
+                }
+
     return ds
