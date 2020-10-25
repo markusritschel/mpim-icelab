@@ -39,7 +39,9 @@ def read_salinity_harp(file, debug=False, **kwargs):
                      engine='python', error_bad_lines=False)
 
     # split first column into harp-module number and wire-pair number and remove the origin column
-    df = df.join(df['device'].str.split(':', 2, expand=True).iloc[:, :2].rename(columns={0: 'module', 1: 'wire_pair'}))
+    df = df.join(df['device'].str.strip(':')
+                             .str.split(':', expand=True)
+                             .rename(columns={0: 'module', 1: 'wire_pair'}))
 
     # remove redundant columns
     df.drop(['device'], inplace=True, axis=1, errors='ignore')
