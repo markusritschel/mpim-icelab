@@ -9,8 +9,6 @@
 #
 import pandas as pd
 
-from .helpers import clean_log_file
-
 
 def read_tsticks(file):
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
