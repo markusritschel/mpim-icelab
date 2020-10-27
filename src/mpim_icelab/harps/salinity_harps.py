@@ -17,7 +17,7 @@ from mpim_icelab.harps.helpers import median, grad, savgol
 logger = logging.getLogger(__name__)
 
 
-def read_salinity_harp(file, debug=False, **kwargs):
+def read_salinity_harps(file, debug=False, **kwargs):
     """Read-out routine for log files of the salinity harps developed by Leif Riemenschneider.
     Non-valid characters get eliminated such that only numeric values remain.
     A xarray.Dataset is created with `time`, `module` and `wire_pair` as coordinates.

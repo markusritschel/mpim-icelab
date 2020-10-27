@@ -11,7 +11,7 @@ import numpy
 import pathlib
 import pytest
 import xarray
-from mpim_icelab.harps import read_salinity_harp
+from mpim_icelab.harps import read_salinity_harps
 from mpim_icelab.harps.salinity_harps import calc_brine_salinity, calc_freezing_starts
 
 # base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,7 +22,7 @@ TESTFILE = pathlib.Path(__file__).parent / 'salinity_harps_test_data.dat'
 
 @pytest.fixture
 def harp_dataset(file=TESTFILE):
-    return read_salinity_harp(file)
+    return read_salinity_harps(file)
 
 
 def test_salinity(harp_dataset):
