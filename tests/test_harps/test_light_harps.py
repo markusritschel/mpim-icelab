@@ -11,7 +11,7 @@ import pathlib
 import pytest
 import xarray
 
-from mpim_icelab.harps import read_light_harp
+from mpim_icelab.harps import read_light_harps
 
 
 TESTFILE_dirty = pathlib.Path(__file__).parent / 'light_harps_test_data_dirty.txt'
@@ -21,8 +21,8 @@ TESTFILE_clean = pathlib.Path(__file__).parent / 'light_harps_test_data_clean.tx
 @pytest.fixture
 def harp_dataset(file=TESTFILE_clean):
     with pytest.raises(ValueError):
-        read_light_harp(TESTFILE_dirty)
-    return read_light_harp(file)
+        read_light_harps(TESTFILE_dirty)
+    return read_light_harps(file)
 
 
 def test_read_light_harp(harp_dataset):

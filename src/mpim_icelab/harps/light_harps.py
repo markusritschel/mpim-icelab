@@ -15,7 +15,7 @@ import xarray as xr
 logger = logging.getLogger(__name__)
 
 
-def read_light_harp(file):
+def read_light_harps(file):
     """Reads a log file of a light harp designed by Leif Riemenschneider. The log file is in tabular form of the format
         idx s:d:a: time C R G B logger_temperature
 
