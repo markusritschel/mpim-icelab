@@ -105,6 +105,10 @@ def calc_brine_salinity(T, method='Assur', print_formula=False):
     ----------
     T : float
         Temperature in °C
+    method : str
+        The method according to which the brine salinity is calculated. Must be one of the above mentioned.
+    print_formula : bool
+        If true, prints the polynomial of the respective method
     """
     # TODO: add validity range and mask T/S accordingly
     # import numpy as np
