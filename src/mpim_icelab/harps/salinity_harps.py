@@ -11,7 +11,7 @@ import logging
 import pandas as pd
 import xarray as xr
 
-from mpim_icelab.harps.helpers import median, grad, savgol
+from .helpers import median, grad, savgol
 
 
 logger = logging.getLogger(__name__)

@@ -8,9 +8,9 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 from mpim_icelab.harps import salinity_harps
-from mpim_icelab.harps.salinity_harps import read_salinity_harps
-from mpim_icelab.harps.light_harps import read_light_harps
-from mpim_icelab.harps.helpers import *
+from .salinity_harps import read_salinity_harps
+from .light_harps import read_light_harps
+from .helpers import *
 
 
 # calc_brine_salinity = salinity_harps.calc_brine_salinity
