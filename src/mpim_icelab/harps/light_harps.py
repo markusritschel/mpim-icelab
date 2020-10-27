@@ -78,6 +78,7 @@ def read_light_harps(file):
                 'R': 'Red channel',
                 'G': 'Green channel',
                 'B': 'Blue channel',
+                'logger_temp': 'Temperature of the logger [°C]'
                 }
 
     return ds
