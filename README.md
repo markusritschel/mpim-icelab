@@ -8,6 +8,12 @@ A collection of routines for various tasks related to the sea-ice laboratory of 
 
 
 ## Installation
+Via pip:
+```bash
+pip install git+https://github.com/markusritschel/mpim-icelab.git
+```
+
+Or, for installing from the sources (with the option to update via a simple `git pull`): <br>
 Clone this repo via
 ```bash
 git clone https://github.com/markusritschel/mpim-icelab
