@@ -8,13 +8,14 @@ A collection of routines for various tasks related to the sea-ice laboratory of 
 
 
 ## Installation
-Via pip:
+The simplest way to install the package is via pip:
 ```bash
 pip install git+https://github.com/markusritschel/mpim-icelab.git
 ```
+For any future updates simply rerun the command again.
 
-Or, for installing from the sources (with the option to update via a simple `git pull`): <br>
-Clone this repo via
+However, one can also install from the sources (with the option to update via a simple `git pull`): <br>
+Therefore, clone this repo via
 ```bash
 git clone https://github.com/markusritschel/mpim-icelab
 ```
@@ -22,12 +23,12 @@ Then, in the new directory (`cd mpim-icelab/`) install the package via:
 ```
 python setup.py install
 ```
-or via one of the following
+If you intend to perform changes on the source code, then an installation by using one of the following commands is suggested:
 ```
 python setup.py develop
 pip install -e .
 ```
-if you plan on making changes on the code.
+This reflects any changes in the source code directly in the installed instance without the need of updating the installation.
 
 
 ## Usage
