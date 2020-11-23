@@ -31,7 +31,7 @@ if you plan on making changes on the code.
 
 
 ## Usage
-For some examples of usage, have a look at the Jupyter notebooks in `./notebooks/`.
+For some examples of usage, have a look at the Jupyter notebooks in the [notebooks](notebooks) directory.
 They explain some of the package's functionalities.
 
 
