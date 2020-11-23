@@ -20,7 +20,15 @@ logger = logging.getLogger(__name__)
 
 
 def read_ctd(file, **kwargs):
-    """Check for file type and call respective reader function."""
+    """Check for file type and call respective reader function.
+
+    Parameters
+    ----------
+    file : str
+        The path to the CTD log file.
+    kwargs : dict
+        Dictionary of parameters being passed to the respective read routine.
+    """
 
     # select reader function based on first line of file
     with open(file, 'r') as f:
@@ -227,7 +235,7 @@ def read_seabird(file: str, **kwargs):
     return ds
 
 
-def read_seabird_serial_log(file, **kwargs):
+def read_seabird_serial_log(file):
     """Return xarray.Dataset"""
     with open(file, 'r') as f:
         lines = filter(None, (line.rstrip() for line in f))  # omit empty lines
@@ -237,11 +245,6 @@ def read_seabird_serial_log(file, **kwargs):
     # Salinity is not included by default. Can be changed in SeaTerm (under Windows)
     if len(lines[0].split(',')) == 6:
         col_names.insert(3, 'salinity')
-
-    units = {'Temperature':  '°C',
-             'Conductivity': 'S/m',
-             'Pressure':     'dbar',
-             'Salinity':     'psu'}
 
     df = pd.read_csv(io.StringIO('\n'.join(lines)), names=col_names, parse_dates={'time': ['_date', '_time']})
 
