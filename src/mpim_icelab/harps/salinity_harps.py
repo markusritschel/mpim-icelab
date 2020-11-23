@@ -150,6 +150,28 @@ def calc_brine_salinity(T, method='Assur', print_formula=False):
 
 
 def calc_freezing_starts(data, resistance_channel='r16', kind='median', tolerance=1e-4):
+    """Computing the freeze onsets.
+
+    Parameters
+    ----------
+    data : xarray.Dataset
+        The xarray dataset generated from the log files of the salinity harps.
+    resistance_channel : str
+        The channel of the resistance values on which the calculation shall be based
+        (currently, one out of 'r16' or 'r10'; state: November 2020)
+    kind : str
+        For being able to compute a gradient of the input data that can be used for determining the freeze onset, the
+        input data need to be smoothed. This is done by a function that is given by `kind` and can be one out of the
+        following: median [default], savgol
+    tolerance : float
+        The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance
+        signal has first reached a critical threshold. This is associated with the freezing onset since the resistance
+        rises once ice is forming.
+
+    Returns
+    -------
+    The time coordinate of the input xarray.Dataset
+    """
     resistance = data[resistance_channel]
 
     # smoothen the signal
@@ -173,10 +195,33 @@ def calc_freezing_starts(data, resistance_channel='r16', kind='median', toleranc
 
 @xr.register_dataset_accessor("seaice")
 class SalinityHarpsAccessor:
+    """A xarray accessor for calculating sea-ice properties by hands of the data from the salinity harps."""
     def __init__(self, xarray_obj):
         self._obj = xarray_obj
 
     def calc_ice_properties(self, **kwargs):
+        """Calculates, based on the data provided by the salinity harps, certain properties of sea ice.
+        I.e., the salinity of brine, the bulk salinity as well as the solid and liquid fraction.
+
+        Parameters
+        ----------
+        resistance_channel : str
+            One of the channels of the salinity harp recording the resistance
+            (i.e. either 'r16' [default] or 'r10' for the current versions of the harps; state: November 2020)
+        r_tol : float
+            The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance
+            signal has first reached a critical threshold. This is associated with the freezing onset since the resistance
+            rises once ice is forming.
+        brine_sal_method : str
+            Determines the method according to which the salinity of brine is computed (see also the doc string of the
+            function `calc_brine_salinity`). Currently this can be one of the following: 'Assur', 'N&W09', or 'Vancoppenolle'.
+
+        Returns
+        -------
+        ds : xarray.Dataset
+            The original xarray dataset but extended by the computed quantities, i.e. salinity of brine, the bulk salinity
+            as well as the solid and liquid fraction.
+        """
         ds = self._obj
         r_ch = kwargs.pop('resistance_channel', 'r16')
         r_tol = kwargs.pop('r_tol', 1e-4)
