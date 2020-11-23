@@ -8,12 +8,14 @@ A collection of routines for various tasks related to the sea-ice laboratory of 
 
 
 ## Installation
+### Simple
 The simplest way to install the package is via pip:
 ```bash
 pip install git+https://github.com/markusritschel/mpim-icelab.git
 ```
 For any future updates simply rerun the command again.
 
+### For the more advanced
 However, one can also install from the sources (with the option to update via a simple `git pull`): <br>
 Therefore, clone this repo via
 ```bash
