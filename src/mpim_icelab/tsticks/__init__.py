@@ -11,6 +11,27 @@ import pandas as pd
 import xarray as xr
 from deprecation import deprecated
 
+def read_tsticks(file):
+    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format
+        stick sec time t0 t1 t2 t3 t4 t5 t6 t7 (old version from Leif's logger)
+    or
+        module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7 (new version from Arduino logger)
+
+    Data are returned as an xarray.Dataset. Users can select the sticks via the `module` number.
+    The new data format comprises a hex id that is unique for each T-stick.
+    The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.
+    If that hex id is desired as the selector, please apply a `swap_dims` beforehand.
+    """
+    with open(file) as myfile:
+        head = '\n'.join([next(myfile) for x in range(10)])
+        if not ',' in head:
+            logger.debug("Inferred string format matches the old data format from Leif's logger")
+            read_routine = read_tsticks_old
+        else:
+            logger.debug("Inferred string format matches the new data format")
+            read_routine = read_tsticks_new
+        return read_routine(file)
+
 
 @deprecated("Please use the new routine with the new file format.")
 def read_tsticks_old(file):
@@ -59,12 +80,11 @@ def read_tsticks_old(file):
     df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
 
     ds = df.to_xarray()
-    # print('\n', ds)
 
     return ds
 
 
-def read_tsticks(file):
+def read_tsticks_new(file):
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
         module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
