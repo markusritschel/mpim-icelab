@@ -7,9 +7,14 @@
 # Date:   22/10/2020
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+import logging
+
 import pandas as pd
 import xarray as xr
 from deprecation import deprecated
+
+logger = logging.getLogger(__name__)
+
 
 def read_tsticks(file):
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format
