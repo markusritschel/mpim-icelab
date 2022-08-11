@@ -69,6 +69,8 @@ def read_tsticks(file):
         module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
     Data get converted into and returned as an xarray.Dataset.
+    Users can select the sticks via the `module` number. If the hex id is desired, apply a `swap_dims` beforehand.
+    The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.
     """
     col_names = ['module', 'hex_id', 'time', 't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
     df = pd.read_csv(file, names=col_names, sep=r",\s+", comment='#',
@@ -107,8 +109,6 @@ def read_tsticks(file):
     # df = df.loc[firstcol_idx][1:]  # first row has only one single value in column 1
     df = df.loc[lastcol_idx][:-1]  # first row has only one single value in column 1
 
-    # TODO: `module` should be an "alias" for the `hex_id`.
-    # IDEA: put the mapping b/w `module and `hex_id` in the attributes and then provide an accessor that provides a custom `.sel` method that parses this dicitonary
     # convert back to multi index
     df = df.stack(level=[1, 2])
     df.index = df.index.rename('sensor', level=2)
@@ -116,8 +116,9 @@ def read_tsticks(file):
     df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
 
     ds = df.to_xarray()
+
+    # Add hex_id as non-dimensional coordinate so that users can switch between the two selectors by using `swap_dims` before
     ds.coords['stick_id'] = ('module', list(module_dict.values()))
     ds.attrs['module_dict'] = module_dict
-    # print('\n', ds)
 
     return ds
