@@ -8,9 +8,11 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 import pandas as pd
+from deprecation import deprecated
 
 
-def read_tsticks(file):
+@deprecated("Please use the new routine with the new file format.")
+def read_tsticks_old(file):
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
         stick sec time t0 t1 t2 t3 t4 t5 t6 t7
 

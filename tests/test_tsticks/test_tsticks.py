@@ -16,6 +16,7 @@ from mpim_icelab.tsticks import read_tsticks
 
 TESTFILE_dirty = pathlib.Path(__file__).parent / 'tstick_data_dirty.dat'
 TESTFILE_clean = pathlib.Path(__file__).parent / 'tstick_data_clean.dat'
+TESTFILE_clean = pathlib.Path(__file__).parent / 'test_tsticks.log'
 
 
 @pytest.fixture
