@@ -79,9 +79,9 @@ def read_tsticks(file):
     df = df.dropna(subset=['timestamp'])
     # df.set_index(['timestamp', 'module'], inplace=True)
 
-    df['identifier'] = df['module'].astype(str).str.cat(df['hex_id'].astype(str), sep=':')
-    df.set_index(['timestamp', 'identifier'], inplace=True)
-    df.drop(['module', 'hex_id'], axis=1, inplace=True)
+    # df['identifier'] = df['module'].astype(str).str.cat(df['hex_id'].astype(str), sep=':')
+    df.set_index(['timestamp', 'module', 'hex_id'], inplace=True)
+    # df.drop(['module', 'hex_id'], axis=1, inplace=True)
 
     # add column index level
     df.columns = pd.MultiIndex.from_product([['temperature'], df.columns])
@@ -89,7 +89,8 @@ def read_tsticks(file):
     # ensure numeric values
     df = df.apply(pd.to_numeric, errors='coerce')
 
-    df = df.unstack(level=1).reorder_levels([0, 2, 1], axis=1)
+    # df = df.unstack(level=1).reorder_levels([0, 3, 2, 1], axis=1)
+    df.unstack(level=[1, 2]).reorder_levels([0, 3, 2, 1], axis=1)
 
     lastcol_idx = df.dropna(subset=[df.columns[-1]]).index
     firstcol_idx = df.dropna(subset=[df.columns[0]]).index
@@ -103,10 +104,11 @@ def read_tsticks(file):
     df = df.loc[lastcol_idx][:-1]  # first row has only one single value in column 1
 
     # convert back to multi index
-    df = df.stack(level=[1, 2])
-    df.index = df.index.rename('sensor', level=2)
+    df = df.stack(level=1)
+    df.index = df.index.rename('stick_id', level=2)
+    df.index = df.index.rename('sensor', level=3)
     sensors = df.index.get_level_values('sensor').unique()
-    df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
+    df.index.set_levels(range(len(sensors)), level=3, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
 
     ds = df.to_xarray()
     # print('\n', ds)
