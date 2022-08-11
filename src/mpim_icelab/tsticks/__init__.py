@@ -61,3 +61,54 @@ def read_tsticks_old(file):
     # print('\n', ds)
 
     return ds
+
+
+def read_tsticks(file):
+    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
+        module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
+
+    Data get converted into and returned as an xarray.Dataset.
+    """
+    col_names = ['module', 'hex_id', 'timestamp', 't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
+    df = pd.read_csv(file, names=col_names, sep=r",\s+", comment='#',
+                     parse_dates=['timestamp'],
+                     engine='python', error_bad_lines=False)
+
+    # convert timme and set index
+    df['timestamp'] = df['timestamp'].dt.tz_localize(None)
+    df = df.dropna(subset=['timestamp'])
+    # df.set_index(['timestamp', 'module'], inplace=True)
+
+    df['identifier'] = df['module'].astype(str).str.cat(df['hex_id'].astype(str), sep=':')
+    df.set_index(['timestamp', 'identifier'], inplace=True)
+    df.drop(['module', 'hex_id'], axis=1, inplace=True)
+
+    # add column index level
+    df.columns = pd.MultiIndex.from_product([['temperature'], df.columns])
+
+    # ensure numeric values
+    df = df.apply(pd.to_numeric, errors='coerce')
+
+    df = df.unstack(level=1).reorder_levels([0, 2, 1], axis=1)
+
+    lastcol_idx = df.dropna(subset=[df.columns[-1]]).index
+    firstcol_idx = df.dropna(subset=[df.columns[0]]).index
+
+    # ... and fill NANs in all columns backwards such that in each row with `lastcol_idx` are
+    # all values of one block
+    df.fillna(method='bfill', inplace=True)
+
+    # now limit data frame to those respective rows
+    # df = df.loc[firstcol_idx][1:]  # first row has only one single value in column 1
+    df = df.loc[lastcol_idx][:-1]  # first row has only one single value in column 1
+
+    # convert back to multi index
+    df = df.stack(level=[1, 2])
+    df.index = df.index.rename('sensor', level=2)
+    sensors = df.index.get_level_values('sensor').unique()
+    df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
+
+    ds = df.to_xarray()
+    # print('\n', ds)
+
+    return ds
