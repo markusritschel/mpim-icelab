@@ -57,7 +57,7 @@ def read_tsticks_old(file):
     df.index = df.index.rename('sensor', level=2)
     sensors = df.index.get_level_values('sensor').unique()
     df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
-    
+
     ds = df.to_xarray()
     # print('\n', ds)
 
@@ -116,6 +116,7 @@ def read_tsticks(file):
     df.index.set_levels(range(len(sensors)), level=2, inplace=True)  # replace 't0', 't1' etc with 0, 1, etc
 
     ds = df.to_xarray()
+    ds.coords['stick_id'] = ('module', list(module_dict.values()))
     ds.attrs['module_dict'] = module_dict
     # print('\n', ds)
 
