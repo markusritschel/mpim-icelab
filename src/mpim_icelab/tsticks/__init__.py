@@ -17,10 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 def read_tsticks(file):
-    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format
-        stick sec time t0 t1 t2 t3 t4 t5 t6 t7 (old version from Leif's logger)
-    or
-        module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7 (new version from Arduino logger)
+    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format::
+
+        # (old version from Leif's logger)
+        stick sec time t0 t1 t2 t3 t4 t5 t6 t7
+
+    or::
+    
+        # (new version from Arduino logger)
+        module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
     Data are returned as an xarray.Dataset. Users can select the sticks via the `module` number.
     The new data format comprises a hex id that is unique for each T-stick.
@@ -40,7 +45,8 @@ def read_tsticks(file):
 
 @deprecated("Please use the new routine with the new file format.")
 def read_tsticks_old(file):
-    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
+    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format::
+    
         stick sec time t0 t1 t2 t3 t4 t5 t6 t7
 
     Data get converted into and returned as an xarray.Dataset.
@@ -90,7 +96,8 @@ def read_tsticks_old(file):
 
 
 def read_tsticks_new(file):
-    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format
+    """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format::
+
         module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
     Data get converted into and returned as an xarray.Dataset.

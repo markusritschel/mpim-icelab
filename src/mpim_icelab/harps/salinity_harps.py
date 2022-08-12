@@ -25,7 +25,7 @@ def read_salinity_harps(file, **kwargs):
     Return
     ------
     ds : xarray.Dataset
-        Converted DataFrame to xarray Dataset. Similar to netCDF structure.
+        Converted :class:`pandas.DataFrame` to :class:`xarray.Dataset`. Similar to netCDF structure.
     """
 
     # specify column names for entries of the data file
@@ -170,7 +170,7 @@ def calc_freezing_starts(data, resistance_channel='r16', kind='median', toleranc
 
     Returns
     -------
-    The time coordinate of the input xarray.Dataset
+    The time coordinate of the input :class:`xarray.Dataset`
     """
     resistance = data[resistance_channel]
 
