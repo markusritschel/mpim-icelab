@@ -15,9 +15,9 @@ import xarray as xr
 logger = logging.getLogger(__name__)
 
 
-def read_light_harps(file):
+def read_light_harps(file: str) -> xr.Dataset:
     """Reads a log file of a light harp designed by Leif Riemenschneider. The log file is in tabular form of the format::
-    
+
         idx s:d:a: time C R G B logger_temperature
 
         idx : integer index keeping track of continuous measurements
@@ -29,7 +29,7 @@ def read_light_harps(file):
         G   : green channel
         B   : blue channel
 
-    Data get converted into and returned as an xarray.Dataset.
+    Data get converted into an :class:`xarray.Dataset`.
     """
     col_names = ['cnt', 'identifier', 'time', 'C', 'R', 'G', 'B', 'logger_temp']
     df = pd.read_csv(file, names=col_names, index_col=0, sep=r"\s+", comment='#',
