@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpim_icelab.harps package &mdash; MPIM Ice-Lab Routines 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mpim_icelab.tsticks package" href="mpim_icelab.tsticks.html" />
+    <link rel="prev" title="mpim_icelab.ctd package" href="mpim_icelab.ctd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MPIM Ice-Lab Routines
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation &amp; Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference &amp; Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mpim_icelab.html">mpim_icelab package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="mpim_icelab.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mpim_icelab.ctd.html">mpim_icelab.ctd package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">mpim_icelab.harps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mpim_icelab.tsticks.html">mpim_icelab.tsticks package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MPIM Ice-Lab Routines</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">mpim_icelab</a> &raquo;</li>
+          <li><a href="mpim_icelab.html">mpim_icelab package</a> &raquo;</li>
+      <li>mpim_icelab.harps package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/mpim_icelab.harps.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-mpim_icelab.harps">
+<span id="mpim-icelab-harps-package"></span><h1>mpim_icelab.harps package<a class="headerlink" href="#module-mpim_icelab.harps" title="Permalink to this heading"></a></h1>
+<section id="module-mpim_icelab.harps.helpers">
+<span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-mpim_icelab.harps.helpers" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.helpers.butterworth">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.helpers.</span></span><span class="sig-name descname"><span class="pre">butterworth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/helpers.html#butterworth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.helpers.butterworth" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to apply a Butterworth filter to an xarray object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.helpers.grad">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.helpers.</span></span><span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/helpers.html#grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.helpers.grad" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to apply a gradient to an xarray object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.helpers.median">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.helpers.</span></span><span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/helpers.html#median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.helpers.median" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to apply a median filter to an xarray object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.helpers.savgol">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.helpers.</span></span><span class="sig-name descname"><span class="pre">savgol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/helpers.html#savgol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.helpers.savgol" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to apply a Savitzky-Golay filter to an xarray object.</p>
+</dd></dl>
+
+<span class="target" id="module-mpim_icelab.harps.light_harps"></span><dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.light_harps.read_light_harps">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.light_harps.</span></span><span class="sig-name descname"><span class="pre">read_light_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/light_harps.html#read_light_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.light_harps.read_light_harps" title="Permalink to this definition"></a></dt>
+<dd><p>Reads a log file of a light harp designed by Leif Riemenschneider. The log file is in tabular form of the format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="n">s</span><span class="p">:</span><span class="n">d</span><span class="p">:</span><span class="n">a</span><span class="p">:</span> <span class="n">time</span> <span class="n">C</span> <span class="n">R</span> <span class="n">G</span> <span class="n">B</span> <span class="n">logger_temperature</span>
+
+<span class="n">idx</span> <span class="p">:</span> <span class="n">integer</span> <span class="n">index</span> <span class="n">keeping</span> <span class="n">track</span> <span class="n">of</span> <span class="n">continuous</span> <span class="n">measurements</span>
+<span class="n">s</span>   <span class="p">:</span> <span class="n">stick</span>
+<span class="n">d</span>   <span class="p">:</span> <span class="n">diode</span>
+<span class="n">a</span>   <span class="p">:</span> <span class="n">amplifier</span>
+<span class="n">C</span>   <span class="p">:</span> <span class="n">clear</span> <span class="n">channel</span>
+<span class="n">R</span>   <span class="p">:</span> <span class="n">red</span> <span class="n">channel</span>
+<span class="n">G</span>   <span class="p">:</span> <span class="n">green</span> <span class="n">channel</span>
+<span class="n">B</span>   <span class="p">:</span> <span class="n">blue</span> <span class="n">channel</span>
+</pre></div>
+</div>
+<p>Data get converted into an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+</dd></dl>
+
+<span class="target" id="module-mpim_icelab.harps.salinity_harps"></span><dl class="py class">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">SalinityHarpsAccessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xarray_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#SalinityHarpsAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A xarray accessor for calculating sea-ice properties by hands of the data from the salinity harps.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor.calc_ice_properties">
+<span class="sig-name descname"><span class="pre">calc_ice_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#SalinityHarpsAccessor.calc_ice_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor.calc_ice_properties" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates, based on the data provided by the salinity harps, certain properties of sea ice.
+I.e., the salinity of brine, the bulk salinity as well as the solid and liquid fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resistance_channel</strong> (<em>str</em>) – One of the channels of the salinity harp recording the resistance
+(i.e. either ‘r16’ [default] or ‘r10’ for the current versions of the harps; state: November 2020)</p></li>
+<li><p><strong>r_tol</strong> (<em>float</em>) – The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance
+signal has first reached a critical threshold. This is associated with the freezing onset since the resistance
+rises once ice is forming.</p></li>
+<li><p><strong>brine_sal_method</strong> (<em>str</em>) – Determines the method according to which the salinity of brine is computed (see also the doc string of the
+function <cite>calc_brine_salinity</cite>). Currently this can be one of the following: ‘Assur’, ‘N&amp;W09’, or ‘Vancoppenolle’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ds</strong> – The original xarray dataset but extended by the computed quantities, i.e. salinity of brine, the bulk salinity
+as well as the solid and liquid fraction.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)">xarray.Dataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.calc_brine_salinity">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_brine_salinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Assur'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_brine_salinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_brine_salinity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the brine salinity by a given temperature according to one of the following methods:
+- ‘Assur’</p>
+<blockquote>
+<div><p>year: 1958
+S = -1.20 - 21.8*T - 0.919*T**2 - 0.0178*T**3</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>‘N&amp;W09’</dt><dd><p>author: Notz &amp; Worster
+year: 2009
+S = -21.4*T - 0.886*T**2 - 0.0170*T**3</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘Vancoppenolle’</dt><dd><p>year: 2019
+doi: 10.1029/2018JC014611
+S = -18.7*T - 0.519*T**2 - 0.00535*T**3</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Temperature in °C</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method according to which the brine salinity is calculated. Must be one of the above mentioned.
+<div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">'Assur'</span></code></p></li>
+<li><p><strong>print_formula</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, prints the polynomial of the respective method
+<div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.calc_freezing_starts">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_freezing_starts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r16'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_freezing_starts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_freezing_starts" title="Permalink to this definition"></a></dt>
+<dd><p>Computing the freeze onsets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>xarray.Dataset</em></a>) – The xarray dataset generated from the log files of the salinity harps.</p></li>
+<li><p><strong>resistance_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel of the resistance values on which the calculation shall be based
+(currently, one out of ‘r16’ or ‘r10’; state: November 2020)
+<div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">'r16'</span></code></p></li>
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – For being able to compute a gradient of the input data that can be used for determining the freeze onset, the
+input data need to be smoothed. This is done by a function that is given by <cite>kind</cite> and can be one out of the
+following: median [default], savgol
+<div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">'median'</span></code></p></li>
+<li><p><strong>tolerance</strong> (<em>float</em><em>, </em><em>optional</em>) – The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance
+signal has first reached a critical threshold. This is associated with the freezing onset since the resistance
+rises once ice is forming.
+<div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">0.0001</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>The time coordinate of the input <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.populate_attrs">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">populate_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#populate_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.populate_attrs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.read_salinity_harps">
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">read_salinity_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#read_salinity_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.read_salinity_harps" title="Permalink to this definition"></a></dt>
+<dd><p>Read-out routine for log files of the salinity harps developed by Leif Riemenschneider.
+Non-valid characters get eliminated such that only numeric values remain.
+An <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> is created with <cite>time</cite>, <cite>module</cite> and <cite>wire_pair</cite> as coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>ds</strong> – Converted <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Similar to netCDF structure.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)">xarray.Dataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mpim_icelab.ctd.html" class="btn btn-neutral float-left" title="mpim_icelab.ctd package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mpim_icelab.tsticks.html" class="btn btn-neutral float-right" title="mpim_icelab.tsticks package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Markus Ritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

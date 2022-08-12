@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPIM Ice-Lab Routines &mdash; MPIM Ice-Lab Routines 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Credits" href="authors.html" />
+    <link rel="prev" title="Python Module Index" href="py-modindex.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MPIM Ice-Lab Routines
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation &amp; Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference &amp; Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Readme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple">Simple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#for-the-more-advanced">For the more advanced</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#todo">TODO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maintainer">Maintainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact-issues">Contact &amp; Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MPIM Ice-Lab Routines</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>MPIM Ice-Lab Routines</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="mpim-ice-lab-routines">
+<h1>MPIM Ice-Lab Routines<a class="headerlink" href="#mpim-ice-lab-routines" title="Permalink to this heading"></a></h1>
+<p><img alt="build" src="https://github.com/markusritschel/mpim-icelab/workflows/build/badge.svg" />
+<span class="xref myst"><img alt="License MIT license" src="https://img.shields.io/github/license/markusritschel/mpim-icelab" /></span></p>
+<p>A collection of routines for various tasks related to the sea-ice laboratory of the Max-Planck-Institute for Meteorology in Hamburg</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<section id="simple">
+<h3>Simple<a class="headerlink" href="#simple" title="Permalink to this heading"></a></h3>
+<p>The simplest way to install the package is via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/markusritschel/mpim-icelab.git
+</pre></div>
+</div>
+<p>For any future updates simply rerun the command again.</p>
+</section>
+<section id="for-the-more-advanced">
+<h3>For the more advanced<a class="headerlink" href="#for-the-more-advanced" title="Permalink to this heading"></a></h3>
+<p>However, one can also install from the sources (with the option to update via a simple <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code>): <br>
+Therefore, clone this repo via</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/markusritschel/mpim-icelab
+</pre></div>
+</div>
+<p>Then, in the new directory (<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">mpim-icelab/</span></code>) install the package via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>If you intend to perform changes on the source code, then an installation by using one of the following commands is suggested:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>This reflects any changes in the source code directly in the installed instance without the need of updating the installation.</p>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<p>For some examples of usage, have a look at the Jupyter notebooks in the <span class="xref myst">notebooks</span> directory.
+They explain some of the package’s functionalities.</p>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
+<p>To test the code, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> in the source directory.
+This will execute both the unit tests and docstring examples (using pytest).</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">coverage</span></code> to generate a test coverage report and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">lint</span></code> to check code style consistency.</p>
+</section>
+<section id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>[ ] Add examples in Jupyter Notebook for TSTICKS</p></li>
+</ul>
+</section>
+<section id="maintainer">
+<h2>Maintainer<a class="headerlink" href="#maintainer" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/markusritschel">markusritschel</a></p></li>
+</ul>
+</section>
+<section id="contact-issues">
+<h2>Contact &amp; Issues<a class="headerlink" href="#contact-issues" title="Permalink to this heading"></a></h2>
+<p>For any questions or issues, please contact me via git&#64;markusritschel.de or open an <a class="reference external" href="https://github.com/markusritschel/mpim-icelab/issues">issue</a>.</p>
+<hr class="docutils" />
+<p>© Markus Ritschel 2020</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="py-modindex.html" class="btn btn-neutral float-left" title="Python Module Index" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="authors.html" class="btn btn-neutral float-right" title="Credits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Markus Ritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

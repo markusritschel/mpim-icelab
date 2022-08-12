@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpim_icelab.ctd.read_routines &mdash; MPIM Ice-Lab Routines 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MPIM Ice-Lab Routines
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation &amp; Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference &amp; Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../py-modindex.html">Python Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MPIM Ice-Lab Routines</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mpim_icelab.ctd.read_routines</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mpim_icelab.ctd.read_routines</h1><div class="highlight"><pre>
+<span></span><span class="c1"># !/usr/bin/env python</span>
+<span class="c1"># -*- coding utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1"># Author: Markus Ritschel</span>
+<span class="c1"># eMail:  kontakt@markusritschel.de</span>
+<span class="c1"># Date:   11/10/2020</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">xmltodict</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_ctd"><a class="viewcode-back" href="../../../api/mpim_icelab.ctd.html#mpim_icelab.ctd.read_routines.read_ctd">[docs]</a><span class="k">def</span> <span class="nf">read_ctd</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check for file type and call respective reader function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        The path to the CTD log file.</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Dictionary of parameters being passed to the respective read routine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># select reader function based on first line of file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="c1"># yields the first non-empty line</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+        <span class="c1"># select reader function based on first line</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;* Sea-Bird&#39;</span><span class="p">):</span>
+            <span class="n">ctd_reader_func</span> <span class="o">=</span> <span class="n">read_seabird</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;RBR&#39;</span><span class="p">):</span>
+            <span class="n">ctd_reader_func</span> <span class="o">=</span> <span class="n">read_rbr</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^#\s+(-*\d+\.\d+,\s+)+&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">ctd_reader_func</span> <span class="o">=</span> <span class="n">read_seabird_serial_log</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t identify file type. Expect the file to start with either &#39;* Sea-Bird&#39;, &#39;RBR&#39;, &quot;</span>
+                          <span class="s2">&quot;or a Seabird stream format like &#39;#   1.8445,  3.05390,    0.568,  34.8722, 28 Mar 2019, 18:00:01&#39;&quot;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;read CTD file </span><span class="si">%s</span><span class="s1"> with </span><span class="si">%s</span><span class="s1"> routine&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">ctd_reader_func</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">ctd_reader_func</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="read_seabird"><a class="viewcode-back" href="../../../api/mpim_icelab.ctd.html#mpim_icelab.ctd.read_routines.read_seabird">[docs]</a><span class="k">def</span> <span class="nf">read_seabird</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Read SeaBird CTD internal log file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        Path to the log file which shall be parsed.</span>
+<span class="sd">    nan_flag : float</span>
+<span class="sd">        Float which marks a missing entry in the log file.</span>
+<span class="sd">    kwargs[&#39;verbose&#39;] : bool</span>
+<span class="sd">        Optionally print out header information of the log file.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ds : pandas.DataFrame</span>
+<span class="sd">        A :class:`pandas.DataFrame` object containing all the variables from the log file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># parse header</span>
+    <span class="n">row_no</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">xml_header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">var_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">sample_interval</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">row_no</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*END*&#39;</span><span class="p">):</span>    <span class="c1"># end of header</span>
+                <span class="k">break</span>
+
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="c1"># read first part into xml structure</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\s*&lt;.+&gt;\s*)$&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rx</span><span class="p">:</span>
+                <span class="n">xml_header</span> <span class="o">+=</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found xml header&quot;</span><span class="p">)</span>
+
+            <span class="c1"># get names and units</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^# name (?P&lt;id&gt;\d) = (?P&lt;variable&gt;.+?): (?P&lt;name&gt;.+?) \[(?P&lt;unit&gt;.+?)\].*$&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rx</span><span class="p">:</span>
+                <span class="n">var_dict</span><span class="p">[</span><span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">),</span>
+                                              <span class="s1">&#39;var_id&#39;</span><span class="p">:</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;variable&#39;</span><span class="p">),</span>
+                                              <span class="s1">&#39;id&#39;</span>  <span class="p">:</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)}</span>
+                <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
+                <span class="n">units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found variable </span><span class="si">%s</span><span class="s2"> (unit: </span><span class="si">%s</span><span class="s2">, name: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;variable&#39;</span><span class="p">),</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">),</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
+
+            <span class="c1"># get logging interval</span>
+            <span class="c1"># rx = re.match(r&#39;^# interval = (?P&lt;unit&gt;\w+?): (?P&lt;value&gt;\d+)&#39;, line)</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^sample interval = (?P&lt;sample_interval&gt;\d+ \w+)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rx</span><span class="p">:</span>
+                <span class="c1"># interval = pd.Timedelta(&#39;{} {}&#39;.format(rx.group(&#39;value&#39;), rx.group(&#39;unit&#39;)))</span>
+                <span class="n">sample_interval</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;sample_interval&#39;</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found sample time: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sample_interval</span><span class="p">)</span>
+
+            <span class="c1"># get start time</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^# start_time = (.+) \[.+\]&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rx</span><span class="p">:</span>
+                <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found start time: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+
+            <span class="c1"># get bad_flag</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^# bad_flag = ([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rx</span><span class="p">:</span>
+                <span class="n">bad_flag</span> <span class="o">=</span> <span class="n">rx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found bad_flag: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">bad_flag</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No variable names found in header! Please check input file.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">start_time</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No start time found in header! Please check input file.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_interval</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No logging interval value found in header! Please check input file.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># modify names such that there are no blank spaces in between elements</span>
+    <span class="n">var_names</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[,]*\s+&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">]</span>
+    <span class="c1"># var_names = [entry.replace(&#39;_Practical&#39;, &#39;&#39;) for entry in var_names]</span>
+
+    <span class="n">units_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">unit</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_names</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="ow">not</span> <span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)}</span>
+
+    <span class="c1"># read rest of the file into a pandas DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">row_no</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
+                     <span class="n">usecols</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)))</span>
+
+    <span class="c1"># remove &#39;time&#39; column</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">var_names</span> <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+    <span class="c1"># ensure all column dtypes are numeric</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+    <span class="c1"># generate time series and set as index</span>
+    <span class="n">time_idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="n">sample_interval</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">time_idx</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">sample_interval</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span>
+
+    <span class="c1"># df.rename(columns={&#39;Salinity_Practical&#39;: &#39;Salinity&#39;}, inplace=True)</span>
+
+    <span class="c1"># remove duplicates</span>
+    <span class="c1"># for var in df.columns:</span>
+    <span class="c1">#     duplicates = [item for item in df.columns if item.startswith(var)]</span>
+    <span class="c1">#     duplicates = [item for item in duplicates if len(item) &gt; len(var)]</span>
+    <span class="c1">#     df.drop(duplicates, axis=1, errors=&#39;ignore&#39;, inplace=True)</span>
+
+    <span class="c1"># take only columns that match unique var_names</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># set nan_flag as NAN</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">df</span> <span class="o">==</span> <span class="n">bad_flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;11}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Start time&#39;</span><span class="p">),</span> <span class="n">start_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;11}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;End time  &#39;</span><span class="p">),</span> <span class="n">time_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;11}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Interval&#39;</span><span class="p">),</span> <span class="n">sample_interval</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Variables and units:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">units_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{:&lt;12}</span><span class="s1"> : </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># logger.info(f&#39;Start time      : {start_time}&#39;)</span>
+    <span class="c1"># logger.info(f&#39;End time        : {time_idx [-1]}&#39;)</span>
+    <span class="c1"># logger.info(f&#39;Sample Interval : {interval}&#39;)</span>
+    <span class="c1"># for var, unit in units_dict.items():</span>
+    <span class="c1">#     logger.info(f&#39;\t{var:&lt;12} : {unit}&#39;)</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+    <span class="c1"># ds.attrs = units_dict</span>
+
+    <span class="n">attrs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span>
+                     <span class="p">},</span>
+        <span class="n">potential_temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span>
+                               <span class="p">},</span>
+        <span class="n">conductivity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;S/m&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span>
+                      <span class="p">},</span>
+        <span class="n">density</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Density&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;kg/m³&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Density&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Density&#39;</span>
+                 <span class="p">},</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span>
+                  <span class="p">},</span>
+        <span class="n">salinity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psu&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span>
+                            <span class="p">},</span>
+        <span class="n">salinity_practical</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Practical Salinity&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psu&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Practical Salinity&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Practical Salinity&#39;</span>
+                            <span class="p">},</span>
+        <span class="n">time</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">},</span>
+        <span class="p">)</span>
+    <span class="n">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">attrs_dict</span><span class="p">)</span>
+
+    <span class="n">xml_header</span> <span class="o">=</span> <span class="s2">&quot;&lt;root&gt;&quot;</span> <span class="o">+</span> <span class="n">xml_header</span> <span class="o">+</span> <span class="s2">&quot;&lt;/root&gt;&quot;</span>
+    <span class="n">xml_dict</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_header</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+<div class="viewcode-block" id="read_seabird_serial_log"><a class="viewcode-back" href="../../../api/mpim_icelab.ctd.html#mpim_icelab.ctd.read_routines.read_seabird_serial_log">[docs]</a><span class="k">def</span> <span class="nf">read_seabird_serial_log</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ds: xarray.Dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">))</span>  <span class="c1"># omit empty lines</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">((</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">))</span>
+
+    <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;conductivity&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;_date&#39;</span><span class="p">,</span> <span class="s1">&#39;_time&#39;</span><span class="p">]</span>
+    <span class="c1"># Salinity is not included by default. Can be changed in SeaTerm (under Windows)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">col_names</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)),</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;_date&#39;</span><span class="p">,</span> <span class="s1">&#39;_time&#39;</span><span class="p">]})</span>
+
+    <span class="c1"># create time and set as index</span>
+    <span class="c1"># df[&#39;time&#39;] = df.date.map(str) + df.time</span>
+    <span class="c1"># df.drop([&#39;date&#39;, &#39;time&#39;], axis=1, inplace=True)</span>
+    <span class="c1"># df[&#39;time&#39;] = pd.to_datetime(df[&#39;time&#39;])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># ensure all column dtypes are numeric</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+
+    <span class="n">attrs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span>
+                     <span class="p">},</span>
+        <span class="n">conductivity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;S/m&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span>
+                      <span class="p">},</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span>
+                  <span class="p">},</span>
+        <span class="n">salinity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psu&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span>
+                  <span class="p">},</span>
+        <span class="n">time</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">},</span>
+        <span class="p">)</span>
+    <span class="n">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">attrs_dict</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+<div class="viewcode-block" id="read_rbr"><a class="viewcode-back" href="../../../api/mpim_icelab.ctd.html#mpim_icelab.ctd.read_routines.read_rbr">[docs]</a><span class="k">def</span> <span class="nf">read_rbr</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nan_flag</span><span class="p">:</span> <span class="nb">float</span><span class="o">=-</span><span class="mf">1000.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Read RBR CTD internal log file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        Path to the log file which shall be parsed.</span>
+<span class="sd">    nan_flag : float</span>
+<span class="sd">        Float which marks a missing entry in the log file.</span>
+<span class="sd">    kwargs[&#39;verbose&#39;] : bool</span>
+<span class="sd">        Optionally print out header information of the log file.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        A :class:`xarray.Dataset` object containing all the variables from the log file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;host_time&#39;</span>     <span class="p">:</span> <span class="s1">&#39;Host time&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;log_time&#39;</span>      <span class="p">:</span> <span class="s1">&#39;Logger time&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;log_start&#39;</span>     <span class="p">:</span> <span class="s1">&#39;Logging start&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;log_end&#39;</span>       <span class="p">:</span> <span class="s1">&#39;Logging end&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;sample_period&#39;</span> <span class="p">:</span> <span class="s1">&#39;Sample period&#39;</span><span class="p">}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># read header info and find number of lines to skip</span>
+        <span class="n">row_no</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">file_header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">row_no</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># break on first empty line (= end of header)</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_header</span> <span class="o">+=</span> <span class="n">line</span>  <span class="c1"># + &#39;\n&#39;</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">header</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^</span><span class="si">{}</span><span class="s1">\s+(\d.+)$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">file_header</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="n">time_str</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">header</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">time_str</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">header</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">time_str</span><span class="p">)</span>
+
+        <span class="c1"># read in the rest if the file into a pandas DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">row_no</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ensure all columns are numeric</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+    <span class="c1"># generate time series and set as index</span>
+    <span class="n">time_idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;log_start&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;log_end&#39;</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;sample_period&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">time_idx</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;sample_period&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span>
+
+    <span class="c1"># set nan_flag as NAN</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">df</span> <span class="o">==</span> <span class="n">nan_flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Cond&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Temp&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Pres&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Sal&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;DensAnom&#39;</span><span class="p">:</span> <span class="s1">&#39;Density_anomaly&#39;</span>
+                       <span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">header</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;14}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">()</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+
+    <span class="n">attrs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Water temperature&#39;</span>
+                     <span class="p">},</span>
+        <span class="n">potential_temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Potential temperature&#39;</span>
+                               <span class="p">},</span>
+        <span class="n">conductivity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;mS/cm&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Conductivity&#39;</span>
+                      <span class="p">},</span>
+        <span class="n">density_anomaly</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Density Anomaly&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;kg/m³&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Density Anomaly&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Density Anomaly&#39;</span>
+                 <span class="p">},</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Pressure&#39;</span>
+                  <span class="p">},</span>
+        <span class="n">salinity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;psu&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity&#39;</span>
+                  <span class="p">},</span>
+        <span class="n">time</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">},</span>
+        <span class="p">)</span>
+    <span class="n">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">attrs_dict</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+<div class="viewcode-block" id="populate_attrs"><a class="viewcode-back" href="../../../api/mpim_icelab.ctd.html#mpim_icelab.ctd.read_routines.populate_attrs">[docs]</a><span class="k">def</span> <span class="nf">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">attrs_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">attrs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sd</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">ds</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Markus Ritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

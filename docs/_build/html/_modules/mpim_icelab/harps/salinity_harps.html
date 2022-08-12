@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mpim_icelab.harps.salinity_harps &mdash; MPIM Ice-Lab Routines 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MPIM Ice-Lab Routines
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation &amp; Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference &amp; Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../py-modindex.html">Python Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MPIM Ice-Lab Routines</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mpim_icelab.harps.salinity_harps</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mpim_icelab.harps.salinity_harps</h1><div class="highlight"><pre>
+<span></span><span class="c1"># !/usr/bin/env python</span>
+<span class="c1"># -*- coding utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1"># Author: Markus Ritschel</span>
+<span class="c1"># eMail:  kontakt@markusritschel.de</span>
+<span class="c1"># Date:   11/10/2020</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="kn">import</span> <span class="n">median</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">savgol</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="read_salinity_harps"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.read_salinity_harps">[docs]</a><span class="k">def</span> <span class="nf">read_salinity_harps</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Read-out routine for log files of the salinity harps developed by Leif Riemenschneider.</span>
+<span class="sd">    Non-valid characters get eliminated such that only numeric values remain.</span>
+<span class="sd">    An :class:`xarray.Dataset` is created with `time`, `module` and `wire_pair` as coordinates.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        Converted :class:`pandas.DataFrame` to :class:`xarray.Dataset`. Similar to netCDF structure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># specify column names for entries of the data file</span>
+    <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;r2&#39;</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="s1">&#39;r16&#39;</span><span class="p">,</span> <span class="s1">&#39;d16&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;logger_temp&#39;</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;read salinity harp now...&#39;</span><span class="p">)</span>
+
+    <span class="c1"># read csv file into Pandas DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span>
+                     <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># split first column into harp-module number and wire-pair number and remove the origin column</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                             <span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                             <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;wire_pair&#39;</span><span class="p">}))</span>
+
+    <span class="c1"># remove redundant columns</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;device&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+    <span class="c1"># convert content of &#39;time&#39; column to datetime objects</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>  <span class="c1"># &#39;coerce&#39; errors yields NA for non datetime strings</span>
+    <span class="c1"># drop rows with non datetime objects and set time as index</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># make remaining columns numeric</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+    <span class="c1"># make &#39;module&#39; and &#39;wire_pair&#39; column additional index</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;wire_pair&#39;</span><span class="p">],</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># convert multi index to multi column</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">lastcol_idx</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span>
+    <span class="c1"># ... and fill NANs in all columns backwards such that in each row with `lastcol_idx` are</span>
+    <span class="c1"># all values of one block</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bfill&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># now limit data frame to those respective rows</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">lastcol_idx</span><span class="p">]</span><span class="c1">#[:-1]  # last row has only one single value in column 1</span>
+
+    <span class="c1"># convert back to multi index</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+
+    <span class="c1"># ensure time coordinate is datetime object</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="n">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">_ATTRS_DICT</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;d2&#39;</span><span class="p">,</span><span class="s1">&#39;d16&#39;</span><span class="p">,</span><span class="s1">&#39;logger_temp&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+<div class="viewcode-block" id="calc_brine_salinity"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.calc_brine_salinity">[docs]</a><span class="k">def</span> <span class="nf">calc_brine_salinity</span><span class="p">(</span><span class="n">T</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Assur&#39;</span><span class="p">,</span> <span class="n">print_formula</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the brine salinity by a given temperature according to one of the following methods:</span>
+<span class="sd">    - &#39;Assur&#39;</span>
+<span class="sd">        year: 1958</span>
+<span class="sd">        S = -1.20 - 21.8*T - 0.919*T**2 - 0.0178*T**3</span>
+
+<span class="sd">    - &#39;N&amp;W09&#39;</span>
+<span class="sd">        author: Notz &amp; Worster</span>
+<span class="sd">        year: 2009</span>
+<span class="sd">        S = -21.4*T - 0.886*T**2 - 0.0170*T**3</span>
+
+<span class="sd">    - &#39;Vancoppenolle&#39;</span>
+<span class="sd">        year: 2019</span>
+<span class="sd">        doi: 10.1029/2018JC014611</span>
+<span class="sd">        S = -18.7*T - 0.519*T**2 - 0.00535*T**3</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    T : float</span>
+<span class="sd">        Temperature in °C</span>
+<span class="sd">    method : str</span>
+<span class="sd">        The method according to which the brine salinity is calculated. Must be one of the above mentioned.</span>
+<span class="sd">    print_formula : bool</span>
+<span class="sd">        If true, prints the polynomial of the respective method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: add validity range and mask T/S accordingly</span>
+    <span class="c1"># import numpy as np</span>
+    <span class="c1"># T_check = np.all(T &lt; 30) &amp; np.all(T &gt; -70)</span>
+    <span class="c1"># assert T_check, &quot;Argument &#39;T&#39; out of range&quot;</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Assur&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">c</span> <span class="o">=</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">18.4809</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;N&amp;W09&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">21.4</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.886</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0170</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Vancoppenolle&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">18.7</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.519</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.00535</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Method unknown!&quot;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using </span><span class="si">%s</span><span class="s1"> method for calculating the brine salinity&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+
+    <span class="n">S_brine</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">T</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">3</span>
+
+    <span class="k">if</span> <span class="n">print_formula</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;For </span><span class="si">{}</span><span class="s1">, the S_brine gets calculated according to&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">S_brine = a + b*T +c*T**2 +d*T**3&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;with: &#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">a = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">b = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">c = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">d = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">S_brine</span></div>
+
+
+<div class="viewcode-block" id="calc_freezing_starts"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.calc_freezing_starts">[docs]</a><span class="k">def</span> <span class="nf">calc_freezing_starts</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">resistance_channel</span><span class="o">=</span><span class="s1">&#39;r16&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Computing the freeze onsets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : xarray.Dataset</span>
+<span class="sd">        The xarray dataset generated from the log files of the salinity harps.</span>
+<span class="sd">    resistance_channel : str</span>
+<span class="sd">        The channel of the resistance values on which the calculation shall be based</span>
+<span class="sd">        (currently, one out of &#39;r16&#39; or &#39;r10&#39;; state: November 2020)</span>
+<span class="sd">    kind : str</span>
+<span class="sd">        For being able to compute a gradient of the input data that can be used for determining the freeze onset, the</span>
+<span class="sd">        input data need to be smoothed. This is done by a function that is given by `kind` and can be one out of the</span>
+<span class="sd">        following: median [default], savgol</span>
+<span class="sd">    tolerance : float</span>
+<span class="sd">        The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance</span>
+<span class="sd">        signal has first reached a critical threshold. This is associated with the freezing onset since the resistance</span>
+<span class="sd">        rises once ice is forming.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    The time coordinate of the input :class:`xarray.Dataset`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resistance</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">resistance_channel</span><span class="p">]</span>
+
+    <span class="c1"># smoothen the signal</span>
+    <span class="n">resistance_smooth</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">kind</span><span class="p">)(</span><span class="n">resistance</span><span class="p">)</span>
+    <span class="c1"># compute gradient of that smoothened signal</span>
+    <span class="n">resistance_grad</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">kind</span><span class="p">)(</span><span class="n">grad</span><span class="p">(</span><span class="n">resistance_smooth</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+    <span class="c1"># set all values below a certain threshold to nan and remove them</span>
+    <span class="n">condition</span> <span class="o">=</span> <span class="n">resistance_grad</span> <span class="o">&gt;</span> <span class="n">tolerance</span>
+    <span class="n">grad_gt_tol</span> <span class="o">=</span> <span class="n">resistance_grad</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">condition</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+    <span class="c1"># alternative:</span>
+    <span class="c1"># grad_tol = resistance_grad.where(condition, drop=True)</span>
+
+    <span class="c1"># then, find the index of the first occurrence</span>
+    <span class="n">freezing_starts</span> <span class="o">=</span> <span class="n">grad_gt_tol</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+    <span class="c1"># alternative:</span>
+    <span class="c1"># freezing_starts = grad_tol.argmin(&#39;time&#39;)</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">freezing_starts</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">freezing_starts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SalinityHarpsAccessor"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor">[docs]</a><span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataset_accessor</span><span class="p">(</span><span class="s2">&quot;seaice&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SalinityHarpsAccessor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A xarray accessor for calculating sea-ice properties by hands of the data from the salinity harps.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xarray_obj</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">xarray_obj</span>
+
+<div class="viewcode-block" id="SalinityHarpsAccessor.calc_ice_properties"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.SalinityHarpsAccessor.calc_ice_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calc_ice_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates, based on the data provided by the salinity harps, certain properties of sea ice.</span>
+<span class="sd">        I.e., the salinity of brine, the bulk salinity as well as the solid and liquid fraction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        resistance_channel : str</span>
+<span class="sd">            One of the channels of the salinity harp recording the resistance</span>
+<span class="sd">            (i.e. either &#39;r16&#39; [default] or &#39;r10&#39; for the current versions of the harps; state: November 2020)</span>
+<span class="sd">        r_tol : float</span>
+<span class="sd">            The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance</span>
+<span class="sd">            signal has first reached a critical threshold. This is associated with the freezing onset since the resistance</span>
+<span class="sd">            rises once ice is forming.</span>
+<span class="sd">        brine_sal_method : str</span>
+<span class="sd">            Determines the method according to which the salinity of brine is computed (see also the doc string of the</span>
+<span class="sd">            function `calc_brine_salinity`). Currently this can be one of the following: &#39;Assur&#39;, &#39;N&amp;W09&#39;, or &#39;Vancoppenolle&#39;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ds : xarray.Dataset</span>
+<span class="sd">            The original xarray dataset but extended by the computed quantities, i.e. salinity of brine, the bulk salinity</span>
+<span class="sd">            as well as the solid and liquid fraction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
+        <span class="n">r_ch</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;resistance_channel&#39;</span><span class="p">,</span> <span class="s1">&#39;r16&#39;</span><span class="p">)</span>
+        <span class="n">r_tol</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;r_tol&#39;</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
+        <span class="n">brine_sal_method</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;brine_sal_method&#39;</span><span class="p">,</span> <span class="s1">&#39;Vancoppenolle&#39;</span><span class="p">)</span>
+
+        <span class="n">freezing_starts</span> <span class="o">=</span> <span class="n">calc_freezing_starts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">resistance_channel</span><span class="o">=</span><span class="n">r_ch</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">r_tol</span><span class="p">)</span>
+        <span class="n">resistance</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">r_ch</span><span class="p">]</span>
+        <span class="n">T_freeze</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">freezing_starts</span><span class="p">)</span>
+
+        <span class="n">T_input</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">T_freeze</span><span class="p">)</span>
+        <span class="n">S_brine</span> <span class="o">=</span> <span class="n">calc_brine_salinity</span><span class="p">(</span><span class="n">T_input</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">brine_sal_method</span><span class="p">)</span>
+
+        <span class="n">r0s</span> <span class="o">=</span> <span class="n">resistance</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">freezing_starts</span><span class="p">)</span>
+        <span class="n">liquid_frac</span> <span class="o">=</span> <span class="n">r0s</span> <span class="o">/</span> <span class="n">ds</span><span class="p">[</span><span class="n">r_ch</span><span class="p">]</span>
+        <span class="n">liquid_frac</span> <span class="o">=</span> <span class="n">liquid_frac</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">liquid_frac</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">solid_frac</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">liquid_frac</span>
+        <span class="n">S_bulk</span> <span class="o">=</span> <span class="n">liquid_frac</span> <span class="o">*</span> <span class="n">S_brine</span>
+
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign</span><span class="p">({</span><span class="s1">&#39;brine_salinity&#39;</span><span class="p">:</span> <span class="n">S_brine</span><span class="p">,</span>
+                        <span class="s1">&#39;bulk_salinity&#39;</span><span class="p">:</span> <span class="n">S_bulk</span><span class="p">,</span>
+                        <span class="s1">&#39;solid_fraction&#39;</span><span class="p">:</span> <span class="n">solid_frac</span><span class="p">,</span>
+                        <span class="s1">&#39;liquid_fraction&#39;</span><span class="p">:</span> <span class="n">liquid_frac</span><span class="p">,</span>
+                        <span class="c1"># &#39;temperature_freeze&#39;: T_freeze</span>
+                       <span class="p">})</span>
+
+        <span class="n">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">_ATTRS_DICT</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ds</span></div></div>
+
+
+<span class="n">_ATTRS_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature inside the ice body&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature at a certain level (associated with the respective wire pair) inside the ice body&#39;</span>
+                 <span class="p">},</span>
+    <span class="n">brine_salinity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity of brine&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;g/kg&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity of brine&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Salinity of brine&#39;</span>
+                    <span class="p">},</span>
+    <span class="n">bulk_salinity</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bulk Salinity&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;g/kg&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Bulk Salinity&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Bulk Salinity&#39;</span>
+                   <span class="p">},</span>
+    <span class="n">solid_fraction</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid fraction&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid fraction&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid fraction&#39;</span>
+                    <span class="p">},</span>
+    <span class="n">liquid_fraction</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Liquid fraction&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Liquid fraction&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Liquid fraction&#39;</span>
+                     <span class="p">},</span>
+    <span class="n">logger_temp</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature inside the ice body&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature at a certain level (associated with the respective wire pair) inside the ice body&#39;</span>
+                 <span class="p">},</span>
+    <span class="n">r16</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance r16&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Ω&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance at 16 Hz&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance at 16 Hz&#39;</span>
+         <span class="p">},</span>
+    <span class="n">r2</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance r2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Ω&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance at 2 Hz&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Resistance at 2 Hz&#39;</span>
+        <span class="p">},</span>
+    <span class="n">d16</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r16&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r16&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r16&#39;</span>
+         <span class="p">},</span>
+    <span class="n">d2</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Debug flag for r2&#39;</span>
+        <span class="p">},</span>
+    <span class="n">wire_pair</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Wire pair&#39;</span><span class="p">},</span>
+    <span class="n">time</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="populate_attrs"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.populate_attrs">[docs]</a><span class="k">def</span> <span class="nf">populate_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">attrs_dict</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">attrs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sd</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">ds</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Markus Ritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
