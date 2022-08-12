@@ -17,10 +17,10 @@ from .helpers import median, grad, savgol
 logger = logging.getLogger(__name__)
 
 
-def read_salinity_harps(file, **kwargs):
+def read_salinity_harps(file: str, **kwargs) -> xr.Dataset:
     """Read-out routine for log files of the salinity harps developed by Leif Riemenschneider.
     Non-valid characters get eliminated such that only numeric values remain.
-    A xarray.Dataset is created with `time`, `module` and `wire_pair` as coordinates.
+    An :class:`xarray.Dataset` is created with `time`, `module` and `wire_pair` as coordinates.
 
     Return
     ------
@@ -85,7 +85,7 @@ def read_salinity_harps(file, **kwargs):
     return ds
 
 
-def calc_brine_salinity(T, method='Assur', print_formula=False):
+def calc_brine_salinity(T: float, method='Assur', print_formula=False):
     """Calculate the brine salinity by a given temperature according to one of the following methods:
     - 'Assur'
         year: 1958
@@ -149,7 +149,7 @@ def calc_brine_salinity(T, method='Assur', print_formula=False):
     return S_brine
 
 
-def calc_freezing_starts(data, resistance_channel='r16', kind='median', tolerance=1e-4):
+def calc_freezing_starts(data: xr.Dataset, resistance_channel='r16', kind='median', tolerance=1e-4) -> xr.Dataset:
     """Computing the freeze onsets.
 
     Parameters

@@ -11,6 +11,7 @@ import io
 import logging
 import numpy as np
 import pandas as pd
+import xarray as xr
 import re
 
 import xmltodict
@@ -19,7 +20,7 @@ import xmltodict
 logger = logging.getLogger(__name__)
 
 
-def read_ctd(file, **kwargs):
+def read_ctd(file: str, **kwargs) -> pd.DataFrame:
     """Check for file type and call respective reader function.
 
     Parameters
@@ -55,7 +56,7 @@ def read_ctd(file, **kwargs):
     return df
 
 
-def read_seabird(file: str, **kwargs):
+def read_seabird(file: str, **kwargs) -> pd.DataFrame:
     """Read SeaBird CTD internal log file.
 
     Parameters
@@ -236,7 +237,7 @@ def read_seabird(file: str, **kwargs):
     return ds
 
 
-def read_seabird_serial_log(file):
+def read_seabird_serial_log(file: str) -> xr.Dataset:
     """
     Return
     ------
@@ -292,7 +293,7 @@ def read_seabird_serial_log(file):
     return ds
 
 
-def read_rbr(file, nan_flag=-1000., **kwargs):
+def read_rbr(file: str, nan_flag: float=-1000., **kwargs) -> xr.Dataset:
     """Read RBR CTD internal log file.
 
     Parameters
@@ -306,8 +307,8 @@ def read_rbr(file, nan_flag=-1000., **kwargs):
 
     Return
     ------
-    ds : pandas.DataFrame
-        A :class:`pandas.DataFrame` object containing all the variables from the log file.
+    ds : xarray.Dataset
+        A :class:`xarray.Dataset` object containing all the variables from the log file.
     """
     header = {'host_time'     : 'Host time',
               'log_time'      : 'Logger time',
@@ -406,7 +407,7 @@ def read_rbr(file, nan_flag=-1000., **kwargs):
     return ds
 
 
-def populate_attrs(ds, attrs_dict):
+def populate_attrs(ds: xr.Dataset, attrs_dict: dict) -> xr.Dataset:
     for var, sd in attrs_dict.items():
         if var in ds.variables:
             for k, v in sd.items():

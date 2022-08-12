@@ -16,21 +16,21 @@ from deprecation import deprecated
 logger = logging.getLogger(__name__)
 
 
-def read_tsticks(file):
+def read_tsticks(file: str) -> xr.Dataset:
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format::
 
         # (old version from Leif's logger)
         stick sec time t0 t1 t2 t3 t4 t5 t6 t7
-
+    
     or::
     
         # (new version from Arduino logger)
         module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
-    Data are returned as an xarray.Dataset. Users can select the sticks via the `module` number.
+    Data are returned as an :class:`xarray.Dataset`. Users can select the sticks via the `module` number.
     The new data format comprises a hex id that is unique for each T-stick.
     The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.
-    If that hex id is desired as the selector, please apply a `swap_dims` beforehand.
+    If that hex id is desired as the selector, please apply a :meth:`swap_dims<xarray.Dataset.swap_dims>` beforehand.
     """
     with open(file) as myfile:
         head = '\n'.join([next(myfile) for x in range(10)])
@@ -44,12 +44,12 @@ def read_tsticks(file):
 
 
 @deprecated("Please use the new routine with the new file format.")
-def read_tsticks_old(file):
+def read_tsticks_old(file: str) -> xr.Dataset:
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format::
-    
+
         stick sec time t0 t1 t2 t3 t4 t5 t6 t7
 
-    Data get converted into and returned as an xarray.Dataset.
+    Data get converted into and returned as an :class:`xarray.Dataset`.
     """
     col_names = ['stick', 'sec', 'time', 't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
     df = pd.read_csv(file, names=col_names, sep=r"\s+", comment='#',
@@ -95,14 +95,15 @@ def read_tsticks_old(file):
     return ds
 
 
-def read_tsticks_new(file):
+def read_tsticks_new(file: str) -> xr.Dataset:
     """Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format::
 
         module, hex_id, timestamp, t0, t1, t2, t3, t4, t5, t6, t7
 
-    Data get converted into and returned as an xarray.Dataset.
-    Users can select the sticks via the `module` number. If the hex id is desired, apply a `swap_dims` beforehand.
+    Data get converted into an :class:`xarray.Dataset`.
+    Users can select the sticks via the `module` number. If the hex id is desired, apply a :meth:`swap_dims<xarray.Dataset.swap_dims>` beforehand.
     The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.
+
     """
     col_names = ['module', 'hex_id', 'time', 't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
     df = pd.read_csv(file, names=col_names, sep=r",\s+", comment='#',
