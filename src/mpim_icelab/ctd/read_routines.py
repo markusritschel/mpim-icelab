@@ -57,6 +57,7 @@ def read_ctd(file, **kwargs):
 
 def read_seabird(file: str, **kwargs):
     """Read SeaBird CTD internal log file.
+
     Parameters
     ----------
     file : str
@@ -69,7 +70,7 @@ def read_seabird(file: str, **kwargs):
     Return
     ------
     ds : pandas.DataFrame
-        A pandas.DataFrame object containing all the variables from the log file.
+        A :class:`pandas.DataFrame` object containing all the variables from the log file.
     """
     # parse header
     row_no = 0
@@ -236,7 +237,11 @@ def read_seabird(file: str, **kwargs):
 
 
 def read_seabird_serial_log(file):
-    """Return xarray.Dataset"""
+    """
+    Return
+    ------
+    ds: xarray.Dataset
+    """
     with open(file, 'r') as f:
         lines = filter(None, (line.rstrip() for line in f))  # omit empty lines
         lines = list((line.lstrip('#') for line in lines))
@@ -289,6 +294,7 @@ def read_seabird_serial_log(file):
 
 def read_rbr(file, nan_flag=-1000., **kwargs):
     """Read RBR CTD internal log file.
+
     Parameters
     ----------
     file : str
@@ -301,7 +307,7 @@ def read_rbr(file, nan_flag=-1000., **kwargs):
     Return
     ------
     ds : pandas.DataFrame
-        A pandas.DataFrame object containing all the variables from the log file.
+        A :class:`pandas.DataFrame` object containing all the variables from the log file.
     """
     header = {'host_time'     : 'Host time',
               'log_time'      : 'Logger time',

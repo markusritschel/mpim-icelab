@@ -12,8 +12,7 @@ import subprocess
 
 
 def clean_log_file(file, output=None):
-    """Cleanse lines, which do not start with a TSTICK identifier. If no output is given, the result is written to
-    <filename>_clean.<ext>."""
+    """Cleanse lines, which do not start with a TSTICK identifier. If no output is given, the result is written to ``<filename>_clean.<ext>``."""
     file = os.path.abspath(file)
     filename, ext = os.path.splitext(file)
     if not output:
