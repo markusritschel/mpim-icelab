@@ -23,6 +23,14 @@ This is the documentation of **MPIM Ice-Lab Routines**.
    API Reference <api/modules>
    Examples <examples>
 
+.. toctree::
+   :caption: Appendix
+   :hidden:
+
+   genindex
+   py-modindex
+   Readme <readme>
+   Authors <authors>
 
 
 
