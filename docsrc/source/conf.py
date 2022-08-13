@@ -44,8 +44,20 @@ extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.inter
               ]
 
 myst_update_mathjax = False
+# typehints_fully_qualified = True
+# always_document_param_types = False
+
+rst_prolog = """
+.. |default| raw:: html
+
+    <div class="default-value-section">""" + \
+    ' <span class="default-value-label">Default:</span>'
+
+
 nbsphinx_execute = 'never'
 bibtex_bibfiles = ['refs.bib']
+
+always_document_param_types = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
