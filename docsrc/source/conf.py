@@ -31,11 +31,16 @@ import mpim_icelab
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
+extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 
+            #   'sphinx_autodoc_typehints',
+            #   'sphinx_toolbox.more_autodoc.typehints',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'pydata_sphinx_theme', 'sphinx_book_theme',
-              'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex'
+              'sphinx.ext.napoleon', 
+            #   'sphinxcontrib.fulltoc',
+              'sphinx_autodoc_defaultargs',
+              'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex',
+              'sphinx_rtd_theme', 'pydata_sphinx_theme', 'sphinx_book_theme',
               ]
 
 myst_update_mathjax = False
