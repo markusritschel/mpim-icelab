@@ -18,6 +18,8 @@
         <script src="../_static/doctools.js"></script>
         <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -152,7 +154,7 @@
 
 <span class="target" id="module-mpim_icelab.harps.light_harps"></span><dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.harps.light_harps.read_light_harps">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.light_harps.</span></span><span class="sig-name descname"><span class="pre">read_light_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/light_harps.html#read_light_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.light_harps.read_light_harps" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.light_harps.</span></span><span class="sig-name descname"><span class="pre">read_light_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/light_harps.html#read_light_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.light_harps.read_light_harps" title="Permalink to this definition"></a></dt>
 <dd><p>Reads a log file of a light harp designed by Leif Riemenschneider. The log file is in tabular form of the format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="n">s</span><span class="p">:</span><span class="n">d</span><span class="p">:</span><span class="n">a</span><span class="p">:</span> <span class="n">time</span> <span class="n">C</span> <span class="n">R</span> <span class="n">G</span> <span class="n">B</span> <span class="n">logger_temperature</span>
 
@@ -167,6 +169,14 @@
 </pre></div>
 </div>
 <p>Data get converted into an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <span class="target" id="module-mpim_icelab.harps.salinity_harps"></span><dl class="py class">
@@ -183,12 +193,13 @@ I.e., the salinity of brine, the bulk salinity as well as the solid and liquid f
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>resistance_channel</strong> (<em>str</em>) – One of the channels of the salinity harp recording the resistance
-(i.e. either ‘r16’ [default] or ‘r10’ for the current versions of the harps; state: November 2020)</p></li>
+(i.e. either ‘r16’ [default] or ‘r2’ for the current versions of the harps; state: November 2020)</p></li>
 <li><p><strong>r_tol</strong> (<em>float</em>) – The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance
 signal has first reached a critical threshold. This is associated with the freezing onset since the resistance
 rises once ice is forming.</p></li>
 <li><p><strong>brine_sal_method</strong> (<em>str</em>) – Determines the method according to which the salinity of brine is computed (see also the doc string of the
-function <cite>calc_brine_salinity</cite>). Currently this can be one of the following: ‘Assur’, ‘N&amp;W09’, or ‘Vancoppenolle’.</p></li>
+function <a class="reference internal" href="#mpim_icelab.harps.salinity_harps.calc_brine_salinity" title="mpim_icelab.harps.salinity_harps.calc_brine_salinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calc_brine_salinity</span></code></a>). Currently,
+this can be one of the following: ‘Assur’, ‘N&amp;W09’, or ‘Vancoppenolle’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -205,27 +216,32 @@ as well as the solid and liquid fraction.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.calc_brine_salinity">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_brine_salinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Assur'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_brine_salinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_brine_salinity" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the brine salinity by a given temperature according to one of the following methods:
-- ‘Assur’</p>
-<blockquote>
-<div><p>year: 1958
-S = -1.20 - 21.8*T - 0.919*T**2 - 0.0178*T**3</p>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>‘N&amp;W09’</dt><dd><p>author: Notz &amp; Worster
-year: 2009
-S = -21.4*T - 0.886*T**2 - 0.0170*T**3</p>
-</dd>
-</dl>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_brine_salinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Assur'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_brine_salinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_brine_salinity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the brine salinity by a given temperature according to one of the following methods:</p>
+<ul>
+<li><div class="line-block">
+<div class="line">‘Assur’</div>
+<div class="line">year: 1958</div>
+<div class="line"><span class="math notranslate nohighlight">\(S = -1.20 - 21.8\cdot T - 0.919\cdot T^2 - 0.0178\cdot T^3\)</span></div>
+</div>
 </li>
-<li><dl class="simple">
-<dt>‘Vancoppenolle’</dt><dd><p>year: 2019
-doi: 10.1029/2018JC014611
-S = -18.7*T - 0.519*T**2 - 0.00535*T**3</p>
-</dd>
-</dl>
+</ul>
+<ul>
+<li><div class="line-block">
+<div class="line">‘N&amp;W09’</div>
+<div class="line">author: Notz &amp; Worster</div>
+<div class="line">year: 2009</div>
+<div class="line"><span class="math notranslate nohighlight">\(S = -21.4\cdot T - 0.886\cdot T^2 - 0.0170\cdot T^3\)</span></div>
+</div>
+</li>
+</ul>
+<ul>
+<li><div class="line-block">
+<div class="line">‘Vancoppenolle’</div>
+<div class="line">year: 2019</div>
+<div class="line">doi: 10.1029/2018JC014611</div>
+<div class="line"><span class="math notranslate nohighlight">\(S = -18.7\cdot T - 0.519\cdot T^2 - 0.00535\cdot T^3\)</span></div>
+</div>
 </li>
 </ul>
 <dl class="field-list simple">
@@ -243,14 +259,14 @@ S = -18.7*T - 0.519*T**2 - 0.00535*T**3</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.calc_freezing_starts">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_freezing_starts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r16'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_freezing_starts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_freezing_starts" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">calc_freezing_starts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r16'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#calc_freezing_starts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.calc_freezing_starts" title="Permalink to this definition"></a></dt>
 <dd><p>Computing the freeze onsets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>xarray.Dataset</em></a>) – The xarray dataset generated from the log files of the salinity harps.</p></li>
 <li><p><strong>resistance_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel of the resistance values on which the calculation shall be based
-(currently, one out of ‘r16’ or ‘r10’; state: November 2020)
+(currently, one out of ‘r16’ or ‘r2’; state: November 2020)
 <div class="default-value-section"> <span class="default-value-label">Default:</span> <code class="code docutils literal notranslate"><span class="pre">'r16'</span></code></p></li>
 <li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – For being able to compute a gradient of the input data that can be used for determining the freeze onset, the
 input data need to be smoothed. This is done by a function that is given by <cite>kind</cite> and can be one out of the
@@ -275,7 +291,7 @@ rises once ice is forming.
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.harps.salinity_harps.read_salinity_harps">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">read_salinity_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#read_salinity_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.read_salinity_harps" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.harps.salinity_harps.</span></span><span class="sig-name descname"><span class="pre">read_salinity_harps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/harps/salinity_harps.html#read_salinity_harps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.harps.salinity_harps.read_salinity_harps" title="Permalink to this definition"></a></dt>
 <dd><p>Read-out routine for log files of the salinity harps developed by Leif Riemenschneider.
 Non-valid characters get eliminated such that only numeric values remain.
 An <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> is created with <cite>time</cite>, <cite>module</cite> and <cite>wire_pair</cite> as coordinates.</p>
@@ -285,6 +301,9 @@ An <a class="reference external" href="https://docs.xarray.dev/en/stable/generat
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)">xarray.Dataset</a></p>
+</dd>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

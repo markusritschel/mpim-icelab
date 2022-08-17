@@ -128,12 +128,23 @@
 <span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-mpim_icelab.ctd.read_routines" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.ctd.read_routines.populate_attrs">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">populate_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#populate_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.populate_attrs" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">populate_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#populate_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.populate_attrs" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a>) – </p></li>
+<li><p><strong>attrs_dict</strong> (<em>dict</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.ctd.read_routines.read_ctd">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_ctd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_ctd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_ctd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_ctd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_ctd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_ctd" title="Permalink to this definition"></a></dt>
 <dd><p>Check for file type and call respective reader function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -142,12 +153,15 @@
 <li><p><strong>kwargs</strong> (<em>dict</em>) – Dictionary of parameters being passed to the respective read routine.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.3)"><em>DataFrame</em></a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.ctd.read_routines.read_rbr">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_rbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1000.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_rbr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_rbr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_rbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_rbr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_rbr" title="Permalink to this definition"></a></dt>
 <dd><p>Read RBR CTD internal log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -159,7 +173,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>ds</strong> – A <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> object containing all the variables from the log file.</p>
+<dd class="field-even"><p><strong>ds</strong> – An <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> object containing all the variables from the log file.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)">xarray.Dataset</a></p>
@@ -169,7 +183,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.ctd.read_routines.read_seabird">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_seabird</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_seabird"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_seabird" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_seabird</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_seabird"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_seabird" title="Permalink to this definition"></a></dt>
 <dd><p>Read SeaBird CTD internal log file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -190,13 +204,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.ctd.read_routines.read_seabird_serial_log">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_seabird_serial_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_seabird_serial_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_seabird_serial_log" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.ctd.read_routines.</span></span><span class="sig-name descname"><span class="pre">read_seabird_serial_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/ctd/read_routines.html#read_seabird_serial_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.ctd.read_routines.read_seabird_serial_log" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>ds</strong></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
 </dd>
 </dl>
 </dd></dl>

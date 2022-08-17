@@ -126,7 +126,7 @@
 <span id="mpim-icelab-tsticks-package"></span><h1>mpim_icelab.tsticks package<a class="headerlink" href="#module-mpim_icelab.tsticks" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.tsticks.read_tsticks">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks" title="Permalink to this definition"></a></dt>
 <dd><p>Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form either of the format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># (old version from Leif&#39;s logger)</span>
 <span class="n">stick</span> <span class="n">sec</span> <span class="n">time</span> <span class="n">t0</span> <span class="n">t1</span> <span class="n">t2</span> <span class="n">t3</span> <span class="n">t4</span> <span class="n">t5</span> <span class="n">t6</span> <span class="n">t7</span>
@@ -141,11 +141,19 @@
 The new data format comprises a hex id that is unique for each T-stick.
 The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.
 If that hex id is desired as the selector, please apply a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.swap_dims.html#xarray.Dataset.swap_dims" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">swap_dims</span></code></a> beforehand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.tsticks.read_tsticks_new">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks_new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks_new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks_new" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks_new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks_new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks_new" title="Permalink to this definition"></a></dt>
 <dd><p>Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span><span class="p">,</span> <span class="n">hex_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">t5</span><span class="p">,</span> <span class="n">t6</span><span class="p">,</span> <span class="n">t7</span>
 </pre></div>
@@ -153,11 +161,19 @@ If that hex id is desired as the selector, please apply a <a class="reference ex
 <p>Data get converted into an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Users can select the sticks via the <cite>module</cite> number. If the hex id is desired, apply a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.swap_dims.html#xarray.Dataset.swap_dims" title="(in xarray v2022.6.1.dev0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">swap_dims</span></code></a> beforehand.
 The hex id is added as a non-dimensional coordinate, and the mapping can be also found in the attributes of the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mpim_icelab.tsticks.read_tsticks_old">
-<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks_old" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mpim_icelab.tsticks.</span></span><span class="sig-name descname"><span class="pre">read_tsticks_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mpim_icelab/tsticks.html#read_tsticks_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpim_icelab.tsticks.read_tsticks_old" title="Permalink to this definition"></a></dt>
 <dd><p>Reads a log file of a T-Stick designed by Leif Riemenschneider. The log file is in tabular form of the format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stick</span> <span class="n">sec</span> <span class="n">time</span> <span class="n">t0</span> <span class="n">t1</span> <span class="n">t2</span> <span class="n">t3</span> <span class="n">t4</span> <span class="n">t5</span> <span class="n">t6</span> <span class="n">t7</span>
 </pre></div>
@@ -166,6 +182,14 @@ The hex id is added as a non-dimensional coordinate, and the mapping can be also
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version Please: </span>use the new routine with the new file format.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.6.1.dev0)"><em>Dataset</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <section id="module-mpim_icelab.tsticks.helpers">

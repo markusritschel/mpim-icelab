@@ -172,19 +172,23 @@
 
 <div class="viewcode-block" id="calc_brine_salinity"><a class="viewcode-back" href="../../../api/mpim_icelab.harps.html#mpim_icelab.harps.salinity_harps.calc_brine_salinity">[docs]</a><span class="k">def</span> <span class="nf">calc_brine_salinity</span><span class="p">(</span><span class="n">T</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Assur&#39;</span><span class="p">,</span> <span class="n">print_formula</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the brine salinity by a given temperature according to one of the following methods:</span>
-<span class="sd">    - &#39;Assur&#39;</span>
-<span class="sd">        year: 1958</span>
-<span class="sd">        S = -1.20 - 21.8*T - 0.919*T**2 - 0.0178*T**3</span>
 
-<span class="sd">    - &#39;N&amp;W09&#39;</span>
-<span class="sd">        author: Notz &amp; Worster</span>
-<span class="sd">        year: 2009</span>
-<span class="sd">        S = -21.4*T - 0.886*T**2 - 0.0170*T**3</span>
+<span class="sd">    - | &#39;Assur&#39;</span>
+<span class="sd">      | year: 1958</span>
+<span class="sd">      | :math:`S = -1.20 - 21.8\cdot T - 0.919\cdot T^2 - 0.0178\cdot T^3`</span>
+<span class="sd">    ..  | S = -1.20 - 21.8*T - 0.919*T**2 - 0.0178*T**3</span>
 
-<span class="sd">    - &#39;Vancoppenolle&#39;</span>
-<span class="sd">        year: 2019</span>
-<span class="sd">        doi: 10.1029/2018JC014611</span>
-<span class="sd">        S = -18.7*T - 0.519*T**2 - 0.00535*T**3</span>
+<span class="sd">    - | &#39;N&amp;W09&#39;</span>
+<span class="sd">      | author: Notz &amp; Worster</span>
+<span class="sd">      | year: 2009</span>
+<span class="sd">      | :math:`S = -21.4\cdot T - 0.886\cdot T^2 - 0.0170\cdot T^3`</span>
+<span class="sd">    ..  | S = -21.4*T - 0.886*T**2 - 0.0170*T**3</span>
+
+<span class="sd">    - | &#39;Vancoppenolle&#39;</span>
+<span class="sd">      | year: 2019</span>
+<span class="sd">      | doi: 10.1029/2018JC014611</span>
+<span class="sd">      | :math:`S = -18.7\cdot T - 0.519\cdot T^2 - 0.00535\cdot T^3`</span>
+<span class="sd">    ..  | S = -18.7*T - 0.519*T**2 - 0.00535*T**3</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -243,7 +247,7 @@
 <span class="sd">        The xarray dataset generated from the log files of the salinity harps.</span>
 <span class="sd">    resistance_channel : str</span>
 <span class="sd">        The channel of the resistance values on which the calculation shall be based</span>
-<span class="sd">        (currently, one out of &#39;r16&#39; or &#39;r10&#39;; state: November 2020)</span>
+<span class="sd">        (currently, one out of &#39;r16&#39; or &#39;r2&#39;; state: November 2020)</span>
 <span class="sd">    kind : str</span>
 <span class="sd">        For being able to compute a gradient of the input data that can be used for determining the freeze onset, the</span>
 <span class="sd">        input data need to be smoothed. This is done by a function that is given by `kind` and can be one out of the</span>
@@ -292,14 +296,15 @@
 <span class="sd">        ----------</span>
 <span class="sd">        resistance_channel : str</span>
 <span class="sd">            One of the channels of the salinity harp recording the resistance</span>
-<span class="sd">            (i.e. either &#39;r16&#39; [default] or &#39;r10&#39; for the current versions of the harps; state: November 2020)</span>
+<span class="sd">            (i.e. either &#39;r16&#39; [default] or &#39;r2&#39; for the current versions of the harps; state: November 2020)</span>
 <span class="sd">        r_tol : float</span>
 <span class="sd">            The tolerance threshold given as float. This threshold gives the value at which the gradient of the resistance</span>
 <span class="sd">            signal has first reached a critical threshold. This is associated with the freezing onset since the resistance</span>
 <span class="sd">            rises once ice is forming.</span>
 <span class="sd">        brine_sal_method : str</span>
-<span class="sd">            Determines the method according to which the salinity of brine is computed (see also the doc string of the</span>
-<span class="sd">            function `calc_brine_salinity`). Currently this can be one of the following: &#39;Assur&#39;, &#39;N&amp;W09&#39;, or &#39;Vancoppenolle&#39;.</span>
+<span class="sd">            Determines the method according to which the salinity of brine is computed (see also the doc string of the </span>
+<span class="sd">            function :meth:`calc_brine_salinity&lt;mpim_icelab.harps.salinity_harps.calc_brine_salinity&gt;`). Currently, </span>
+<span class="sd">            this can be one of the following: &#39;Assur&#39;, &#39;N&amp;W09&#39;, or &#39;Vancoppenolle&#39;.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
